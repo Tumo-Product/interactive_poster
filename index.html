@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dragndropper</title>
+	<link rel="stylesheet" href="styles/main.css">
+	<link rel="stylesheet" href="styles/loader.css">
+	<script src="//cdn.jsdelivr.net/npm/phaser@3.55.0/dist/phaser.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+	<div class="container" id="loadingScreen">
+		<div id="loader">
+			<div class="line"></div>
+			<div class="line"></div>
+			<div class="line"></div>
+			<div class="line"></div>
+			<div class="line"></div>
+			<div class="line"></div>
+			<div class="line"></div>
+			<div class="line"></div>
+		</div>
+	</div>
+
+	<div class="box container">
+		<div class="front">
+			<div class="container" id="canvas">
+			</div>
+		</div>
+		<div class="back">
+			<div class="container">
+				<img src="images/outcome.jpg">
+			</div>
+		</div>
+	</div>
+
+	<script src="scripts/parser.js"></script>
+	<script src="scripts/gfx.js"></script>
+    <script src="scripts/scene.js"></script>
+	<script src="scripts/flow.js"></script>
+</body>
+
+</html>
