@@ -1,5 +1,5 @@
-const width = 900;
-const height = 600;
+const width = 800;
+const height = 500;
 let startingPositions = [];
 let stickPositions = [];
 let circles = [];
@@ -19,6 +19,8 @@ class MainScene extends Phaser.Scene {
             this.load.image(icon.name, "../" + icon.img);
         }
 
+        this.load.image("square", "../images/square.png");
+
         this.load.image('bg', "../" + bgPath);
         gfx.toggleLoadingScreen();
     }
@@ -30,6 +32,9 @@ class MainScene extends Phaser.Scene {
         for (let i = 0; i < icons.length; i++) {
             let icon = icons[i];
             let x = this.left, y = (i + 1) * this.top;
+
+            let sqr = this.add.image(x, y, "square").setOrigin(0.5);
+            sqr.scale = 0.1;
 
             circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
             circles[i].scale = 0.05;
@@ -48,6 +53,7 @@ class MainScene extends Phaser.Scene {
         this.input.on('dragstart', this.dragstart);
         this.input.on('drag', this.drag);
         this.input.on('dragend', this.dragend);
+        this.input.on('wheel', this.wheel);
     }
 
     async dragstart(pointer, gameObject) {
@@ -91,6 +97,12 @@ class MainScene extends Phaser.Scene {
                 $(".front").addClass("frontFlip");
                 $(".back").addClass("backFlip");
             });
+        }
+    }
+
+    async wheel(pointer, gameObjects, deltaX, deltaY, deltaZ) {
+        for (let circle of circles) {
+            circle.y += deltaY;
         }
     }
 }
