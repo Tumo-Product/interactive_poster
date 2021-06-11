@@ -1,7 +1,15 @@
 const width = 900;
 const height = 600;
+let startingPositions = [];
+let stickPositions = [];
+let circles = [];
+let safeDistance = 60;
+let lockedIndex = 0;
 
 class MainScene extends Phaser.Scene {
+    left = 50
+    top = 70;
+
     constructor() {
         super({ key: 'MainScene' })
     }
@@ -18,56 +26,71 @@ class MainScene extends Phaser.Scene {
     async create() {
         context = this;
         let bg = this.add.image(width / 2, height / 2, 'bg').setOrigin(0.5);
-        let circles = [];
-		let lockedIndex = 0;
 
         for (let i = 0; i < icons.length; i++) {
             let icon = icons[i];
+            let x = this.left, y = (i + 1) * this.top;
 
-            circles[i] = this.add.image(50, i * 70 + 50, icon.name).setOrigin(0.5);
+            circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
             circles[i].scale = 0.05;
             circles[i].setInteractive();
 
             this.input.setDraggable(circles[i]);
             this.input.dragDistanceThreshold = 5;
 
-            circles[i].startingPos = { x: 50, y: i * 70 + 50 };
-            circles[i].stick = { x: icon.stick.x, y: icon.stick.y };
+            startingPositions.push({ x: x, y: y });
+            stickPositions.push({ x: icon.stick.x, y: icon.stick.y });
+            circles[i].startingIndex = i;
+            circles[i].stickIndex = i;
         }
 
-        this.input.on('dragstart', function (pointer, gameObject) {
-            gameObject.setTint(0xff0000);
-        });
 
-        this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
-            gameObject.x = dragX;
-            gameObject.y = dragY;
-        });
+        this.input.on('dragstart', this.dragstart);
+        this.input.on('drag', this.drag);
+        this.input.on('dragend', this.dragend);
+    }
 
-        this.input.on('dragend', function (pointer, gameObject) {
-            gameObject.clearTint();
+    async dragstart(pointer, gameObject) {
+        gameObject.setTint(0xff0000);
+    }
 
-            let dist = Phaser.Math.Distance.Between(gameObject.x, gameObject.y, gameObject.stick.x, gameObject.stick.y);
+    async drag(pointer, gameObject, dragX, dragY) {
+        gameObject.x = dragX;
+        gameObject.y = dragY;
+    }
 
-            if (dist < 60) {
-                gameObject.x = gameObject.stick.x;
-                gameObject.y = gameObject.stick.y;
+    async dragend(pointer, gameObject) {
+        gameObject.clearTint();
 
-                gameObject.input.draggable = false;
-				lockedIndex++;
-            } else {
-                gameObject.x = gameObject.startingPos.x;
-                gameObject.y = gameObject.startingPos.y;
+        let stickIndex = -1;
+
+        for (let i = 0; i < stickPositions.length; i++) {
+            let dist = Phaser.Math.Distance.Between(gameObject.x, gameObject.y, stickPositions[i].x, stickPositions[i].y);
+
+            if (dist < safeDistance) {
+                stickIndex = i;
+                break;
             }
+        }
 
-			if (lockedIndex  == circles.length) {
-				console.log("all locked");
+        if (stickIndex > -1) {
+            gameObject.x = stickPositions[stickIndex].x;
+            gameObject.y = stickPositions[stickIndex].y;
 
-				$(function() {
-					$(".front").addClass("frontFlip");
-					$(".back").addClass("backFlip");
-				});
-			}
-        });
+            if (gameObject.stickIndex == stickIndex) { 
+                lockedIndex++;
+                gameObject.input.draggable = false;
+            }
+        } else {
+            gameObject.x = startingPositions[gameObject.startingIndex].x;
+            gameObject.y = startingPositions[gameObject.startingIndex].y;
+        }
+
+        if (lockedIndex == circles.length) {
+            $(function() {
+                $(".front").addClass("frontFlip");
+                $(".back").addClass("backFlip");
+            });
+        }
     }
 }
