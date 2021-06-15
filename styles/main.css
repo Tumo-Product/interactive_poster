@@ -1,8 +1,23 @@
+@font-face{
+    font-family: Fedra;
+    src: url('../fonts/FedraSansAltPro/FedraSansAltPro-Medium.otf');
+}
+
+@font-face{
+    font-family: FedraBook;
+    src: url('../fonts/FedraSansAltPro/FedraSansAltPro-Book.otf');
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Fedra;
     overflow: hidden;
+}
+
+body {
+    background-color: #F3F3F3;
 }
 
 .container {
@@ -15,7 +30,111 @@
 }
 
 #background {
-    height: 80%;
+    border-radius: 19px;
+    width: 675px;
+    height: 451px;
+    position: absolute;
+    left: 192px;
+    top: 50px;
+    box-shadow: 5px 5px 5px 0 rgba(222,222,230,0.5), -3px -3px 5px 0 #FEFEFE;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#background img {
+    border-radius: 15px;
+    pointer-events: none;
+    display: none;
+}
+
+#background p {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 25px;
+    text-align: center;
+    color: #596B80;
+}
+
+#icons {
+    transition: 1s;
+    position: absolute;
+    width: 130px;
+    height: 50px;
+    left: 36px;
+    top: 250px;
+    bottom: 250px;
+    box-shadow: inset -2px -2px 5px 0 #FFFFFF, inset 2px 3px 3px 1px rgba(222,222,230,0.72);
+    border-radius: 19px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#play {
+    width: 120px;
+    height: 42px;
+    box-shadow: 5px 5px 5px 0 rgba(222,222,230,0.5), -3px -3px 5px 0 #FEFEFE;
+    border-radius: 15px;
+    margin-top: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: 1s;
+}
+
+#play p {
+    color: #686ACF;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 25px;
+    text-align: center;
+}
+
+.icon {
+    height: 88px;
+    width: 88px;
+    border-radius: 19px;
+    background-color: #F3F3F3;
+    box-shadow: 5px 5px 5px 0 rgba(222,222,230,0.5), -3px -3px 5px 0 #FEFEFE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.icon div {
+    height: 78px;
+    width: 78px;
+    border-radius: 16px;
+    background-color: rgba(225,232,241,0.38);
+}
+
+.icon:last-child {
+    margin: 0 !important;
+}
+
+.grow {
+    left: 36px !important;
+    top: 50px !important;
+    width: 130px !important;
+    height: 451px !important;
+}
+
+.offscreen {
+    position: absolute;
+    margin-right: 280px;
+}
+
+canvas {
+    z-index: 1;
+    pointer-events: none;
+    transition: 1s;
+    opacity: 0;
 }
 
 #items {

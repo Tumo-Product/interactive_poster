@@ -19,22 +19,15 @@ class MainScene extends Phaser.Scene {
             this.load.image(icon.name, "../" + icon.img);
         }
 
-        this.load.image("square", "../images/square.png");
-
-        this.load.image('bg', "../" + bgPath);
         gfx.toggleLoadingScreen();
     }
 
     async create() {
         context = this;
-        let bg = this.add.image(width / 2, height / 2, 'bg').setOrigin(0.5);
 
         for (let i = 0; i < icons.length; i++) {
             let icon = icons[i];
             let x = this.left, y = (i + 1) * this.top;
-
-            let sqr = this.add.image(x, y, "square").setOrigin(0.5);
-            sqr.scale = 0.1;
 
             circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
             circles[i].scale = 0.05;

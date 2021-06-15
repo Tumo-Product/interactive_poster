@@ -1,7 +1,8 @@
 {
     "sets": [
         {
-            "background": "images/background.jpg",
+            "intro": "Intro text goes here",
+            "background": "images/poster.jpg",
             "icons": [
                 {
                     "name": "circle",
