@@ -41,6 +41,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: -1;
 }
 
 #background img {
@@ -84,6 +85,7 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    z-index: 10;
     transition: 1s;
 }
 
@@ -93,6 +95,28 @@ body {
     font-weight: 500;
     line-height: 25px;
     text-align: center;
+}
+
+#play:hover p {
+    opacity: 0.7;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+#parent {
+    overflow: visible;
+    animation: popup 1s ease-out;
+}
+
+@keyframes popup {
+    from {
+        margin-top: 600px;
+    }
+    to {
+        margin: 0;
+    }
 }
 
 .icon {
@@ -112,10 +136,18 @@ body {
     width: 78px;
     border-radius: 16px;
     background-color: rgba(225,232,241,0.38);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon:first-child {
+    /* margin-top: 20px; */
 }
 
 .icon:last-child {
-    margin: 0 !important;
+    margin-bottom: 20px;
 }
 
 .grow {
@@ -135,6 +167,13 @@ canvas {
     pointer-events: none;
     transition: 1s;
     opacity: 0;
+}
+
+#canvas {
+    position: absolute;
+    right: 42px;
+    top: 50px;
+    bottom: 49px;
 }
 
 #items {

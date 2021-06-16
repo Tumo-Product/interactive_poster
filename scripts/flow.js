@@ -2,6 +2,20 @@ let bgPath = "images/background.jpg";
 let icons = [];
 let context;
 let game;
+let positions = [];
+let popupDone = false;
+
+let config = {
+    type: Phaser.AUTO,
+    parent: 'canvas',
+    scale: {
+        _parent: 'canvas',
+        width: width,
+        height: height
+    },
+    scene: MainScene,
+    transparent: true
+};
 
 const timeout = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -20,33 +34,37 @@ const onPageLoad = async () => {
         $("#background p").html(set.intro);
     }
 
-    let config = {
-        type: Phaser.AUTO,
-        backgroundColor: '#2dab2d',
-        parent: 'canvas',
-        scale: {
-            _parent: 'canvas',
-            width: width,
-            height: height
-        },
-        scene: MainScene,
-        transparent: true
-    };
+    $("#background img").attr("src", bgPath);
+    gfx.toggleLoadingScreen();
 
     game = new Phaser.Game(config);
-    
-    $("#background img").attr("src", bgPath);
 }
 
 const addIcons = () => {
+    $("#icons").append(`<div id="parent"></div>`);
+
     for (let i = 0; i < icons.length; i++) {
-        gfx.addIcon();
+        gfx.addIcon("parent");
     }
 }
 
 const onPlay = async () => {
     await gfx.onPlay();
     addIcons();
+    updatePositions();
+    window.context.initialize();
+
+    await timeout(1000);
+    popupDone = true;
+    window.context.setStartingPositions();
+}
+
+const updatePositions = () => {
+    $(".icon").each(function (i) {
+        positions[i] = $(this).position();
+        positions[i].left += 44;
+        positions[i].top += 44;
+    });
 }
 
 $(onPageLoad());

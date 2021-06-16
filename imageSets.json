@@ -6,7 +6,7 @@
             "icons": [
                 {
                     "name": "circle",
-                    "img": "images/circle.png",
+                    "img": "images/circle.svg",
                     "stick": {
                         "x": 452,
                         "y": 44
@@ -14,7 +14,7 @@
                 },
                 {
                     "name": "circle2",
-                    "img": "images/circle2.png",
+                    "img": "images/circle.svg",
                     "stick": {
                         "x": 480,
                         "y": 528

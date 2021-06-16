@@ -1,14 +1,15 @@
-const width = 800;
-const height = 500;
+const width = 822;
+const height = 451;
 let startingPositions = [];
 let stickPositions = [];
 let circles = [];
 let safeDistance = 60;
 let lockedIndex = 0;
+let scr = 0;
 
 class MainScene extends Phaser.Scene {
-    left = 50
-    top = 70;
+    left = 65;
+    top = 104;
 
     constructor() {
         super({ key: 'MainScene' })
@@ -16,37 +17,50 @@ class MainScene extends Phaser.Scene {
 
     async preload() {
         for (let icon of icons) {
-            this.load.image(icon.name, "../" + icon.img);
+            this.load.svg(icon.name, "../" + icon.img);
         }
-
-        gfx.toggleLoadingScreen();
+        window.context = this;
     }
 
-    async create() {
-        context = this;
-
+    async initialize() {
         for (let i = 0; i < icons.length; i++) {
             let icon = icons[i];
-            let x = this.left, y = (i + 1) * this.top;
+            let x = positions[i].left;
+            let y = positions[i].top;
 
             circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
-            circles[i].scale = 0.05;
+            circles[i].setScale(0.7);
             circles[i].setInteractive();
 
             this.input.setDraggable(circles[i]);
             this.input.dragDistanceThreshold = 5;
 
-            startingPositions.push({ x: x, y: y });
-            stickPositions.push({ x: icon.stick.x, y: icon.stick.y });
+            stickPositions[i] = { x: icon.stick.x, y: icon.stick.y };
             circles[i].startingIndex = i;
             circles[i].stickIndex = i;
         }
+    }
 
+    async update() {
+        updatePositions();
 
-        this.input.on('dragstart', this.dragstart);
-        this.input.on('drag', this.drag);
-        this.input.on('dragend', this.dragend);
-        this.input.on('wheel', this.wheel);
+        if (circles.length > 0 && positions !== undefined && !popupDone) {
+            for (let i = 0; i < circles.length; i++) {
+                circles[i].y = positions[i].top;
+            }
+        }
+    }
+
+    async setStartingPositions() {
+        for (let i = 0; i < circles.length; i++)
+        {
+            startingPositions[i] = { x: circles[i].x, y: circles[i].y };
+
+            this.input.on('dragstart', this.dragstart);
+            this.input.on('drag', this.drag);
+            this.input.on('dragend', this.dragend);
+            this.input.on('wheel', this.wheel);
+        }
     }
 
     async dragstart(pointer, gameObject) {
@@ -92,10 +106,9 @@ class MainScene extends Phaser.Scene {
             });
         }
     }
-
+    
     async wheel(pointer, gameObjects, deltaX, deltaY, deltaZ) {
-        for (let circle of circles) {
-            circle.y += deltaY;
-        }
+        scr = $("#parent").scrollTop() + deltaY;
+        $("#parent").scrollTop(scr);
     }
 }

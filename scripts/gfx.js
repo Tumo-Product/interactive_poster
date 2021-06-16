@@ -29,7 +29,7 @@ const gfx = {
 		await timeout(1000);
 		$("#play").remove();
 	},
-	addIcon: () => {
-		$("#icons").append(gfx.icon);
+	addIcon: (parent) => {
+		$("#" + parent).append(gfx.icon);
 	}
 }
