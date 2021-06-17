@@ -3,9 +3,12 @@ const height = 451;
 let startingPositions = [];
 let stickPositions = [];
 let circles = [];
-let safeDistance = 60;
+let safeDistance = 50;
 let lockedIndex = 0;
 let scr = 0;
+let scrollDelta = 0;
+let dragging = false;
+let distances = [];
 
 class MainScene extends Phaser.Scene {
     left = 65;
@@ -19,6 +22,7 @@ class MainScene extends Phaser.Scene {
         for (let icon of icons) {
             this.load.svg(icon.name, "../" + icon.img);
         }
+        
         window.context = this;
     }
 
@@ -29,37 +33,36 @@ class MainScene extends Phaser.Scene {
             let y = positions[i].top;
 
             circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
-            circles[i].setScale(0.7);
+
+            circles[i].setScale(0.5);
             circles[i].setInteractive();
 
             this.input.setDraggable(circles[i]);
             this.input.dragDistanceThreshold = 5;
 
-            stickPositions[i] = { x: icon.stick.x, y: icon.stick.y };
+            stickPositions[i] = { x: icon.stick.x + 165, y: icon.stick.y + 9 };
+            this.add.image(stickPositions[i].x, stickPositions[i].y, i).setOrigin(0.5);
+            console.log(stickPositions[i]);
+
             circles[i].startingIndex = i;
             circles[i].stickIndex = i;
         }
+
+        this.input.on('dragstart', this.dragstart);
+        this.input.on('drag', this.drag);
+        this.input.on('dragend', this.dragend);
+        this.input.on('wheel', this.wheel);
     }
 
     async update() {
         updatePositions();
 
-        if (circles.length > 0 && positions !== undefined && !popupDone) {
+        // console.log(dragging);
+        if (circles.length > 0 && positions !== undefined && !dragging) {
             for (let i = 0; i < circles.length; i++) {
                 circles[i].y = positions[i].top;
+                startingPositions[i] = { x: circles[i].x, y: circles[i].y };
             }
-        }
-    }
-
-    async setStartingPositions() {
-        for (let i = 0; i < circles.length; i++)
-        {
-            startingPositions[i] = { x: circles[i].x, y: circles[i].y };
-
-            this.input.on('dragstart', this.dragstart);
-            this.input.on('drag', this.drag);
-            this.input.on('dragend', this.dragend);
-            this.input.on('wheel', this.wheel);
         }
     }
 
@@ -68,27 +71,36 @@ class MainScene extends Phaser.Scene {
     }
 
     async drag(pointer, gameObject, dragX, dragY) {
+        dragging = true;
         gameObject.x = dragX;
         gameObject.y = dragY;
     }
 
     async dragend(pointer, gameObject) {
+        dragging = false;
         gameObject.clearTint();
 
         let stickIndex = -1;
+        console.log(gameObject.x, gameObject.y);
 
         for (let i = 0; i < stickPositions.length; i++) {
-            let dist = Phaser.Math.Distance.Between(gameObject.x, gameObject.y, stickPositions[i].x, stickPositions[i].y);
-
-            if (dist < safeDistance) {
-                stickIndex = i;
-                break;
-            }
+            distances[i] = Phaser.Math.Distance.Between(gameObject.x, gameObject.y, stickPositions[i].x, stickPositions[i].y);
         }
+
+        let smallestDistance = distances[0];
+        for (let i = 0; i < distances.length; i++) {
+            if (distances[i] < smallestDistance) {
+                smallestDistance = distances[i];
+            }
+
+            if (smallestDistance < safeDistance) stickIndex = i;
+        }
+        console.log(smallestDistance);
 
         if (stickIndex > -1) {
             gameObject.x = stickPositions[stickIndex].x;
             gameObject.y = stickPositions[stickIndex].y;
+            console.log(stickPositions[stickIndex]);
 
             if (gameObject.stickIndex == stickIndex) { 
                 lockedIndex++;
@@ -101,13 +113,15 @@ class MainScene extends Phaser.Scene {
 
         if (lockedIndex == circles.length) {
             $(function() {
-                $(".front").addClass("frontFlip");
-                $(".back").addClass("backFlip");
+                // $(".front").addClass("frontFlip");
+                // $(".back").addClass("backFlip");
             });
         }
     }
     
     async wheel(pointer, gameObjects, deltaX, deltaY, deltaZ) {
+        scrollDelta = deltaY;
+
         scr = $("#parent").scrollTop() + deltaY;
         $("#parent").scrollTop(scr);
     }

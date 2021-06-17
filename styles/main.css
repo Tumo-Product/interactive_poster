@@ -59,6 +59,22 @@ body {
 }
 
 #icons {
+    position: absolute;
+    width: 130px;
+    height: 50px;
+    left: 36px;
+    top: 250px;
+    bottom: 250px;
+    border-radius: 19px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+#iconsOverlay {
+    pointer-events: none;
     transition: 1s;
     position: absolute;
     width: 130px;
@@ -66,13 +82,8 @@ body {
     left: 36px;
     top: 250px;
     bottom: 250px;
-    box-shadow: inset -2px -2px 5px 0 #FFFFFF, inset 2px 3px 3px 1px rgba(222,222,230,0.72);
     border-radius: 19px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
+    box-shadow: inset -2px -2px 5px 0 #FFFFFF, inset 2px 3px 3px 1px rgba(222,222,230,0.72);
 }
 
 #play {
@@ -106,8 +117,10 @@ body {
 }
 
 #parent {
-    overflow: visible;
+    overflow: auto;
     animation: popup 1s ease-out;
+    width: 120px;
+    padding-left: 16px;
 }
 
 @keyframes popup {
@@ -143,7 +156,7 @@ body {
 }
 
 .icon:first-child {
-    /* margin-top: 20px; */
+    margin-top: 20px;
 }
 
 .icon:last-child {
@@ -167,6 +180,7 @@ canvas {
     pointer-events: none;
     transition: 1s;
     opacity: 0;
+    border-radius: 15px;
 }
 
 #canvas {

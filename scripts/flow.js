@@ -3,7 +3,6 @@ let icons = [];
 let context;
 let game;
 let positions = [];
-let popupDone = false;
 
 let config = {
     type: Phaser.AUTO,
@@ -53,17 +52,13 @@ const onPlay = async () => {
     addIcons();
     updatePositions();
     window.context.initialize();
-
-    await timeout(1000);
-    popupDone = true;
-    window.context.setStartingPositions();
 }
 
 const updatePositions = () => {
     $(".icon").each(function (i) {
         positions[i] = $(this).position();
         positions[i].left += 44;
-        positions[i].top += 44;
+        positions[i].top += 44 + parseInt($(this).css('marginTop'), 10);
     });
 }
 

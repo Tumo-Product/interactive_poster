@@ -21,6 +21,7 @@ const gfx = {
 	},
 	onPlay: async () => {
 		$("#icons").addClass("grow");
+		$("#iconsOverlay").addClass("grow");
 		$("#background p").remove();
 		$("#background img").show();
 		gfx.toggleCanvas();
