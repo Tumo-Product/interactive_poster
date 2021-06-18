@@ -45,9 +45,11 @@ body {
 }
 
 #background img {
+    position: absolute;
     border-radius: 15px;
     pointer-events: none;
-    display: none;
+    transition: 2s;
+    opacity: 0;
 }
 
 #background p {

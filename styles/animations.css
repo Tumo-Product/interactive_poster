@@ -1,0 +1,39 @@
+.pulse {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 0 rgba(204,169,44, 0.9);
+}
+
+.appear {
+    animation: appear 1s ease-in;
+}
+
+.pulsate {
+    animation: pulse 3s infinite;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+  
+@keyframes pulse {
+    0% {
+      -webkit-box-shadow: 0 0 0 0 rgba(228, 228, 228, 0.781);
+        background: #ffffff00;
+    }  
+    70% {
+        -webkit-box-shadow: 0 0 0 26px rgba(255, 255, 255, 0);
+        background: #ffffff3a;
+    }
+    100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(138, 138, 138, 0);
+    }
+}

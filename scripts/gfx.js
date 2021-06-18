@@ -23,7 +23,7 @@ const gfx = {
 		$("#icons").addClass("grow");
 		$("#iconsOverlay").addClass("grow");
 		$("#background p").remove();
-		$("#background img").show();
+		$("#background img").css("opacity", 1);
 		gfx.toggleCanvas();
 		await timeout(500);
 		$("#play").addClass("offscreen");
@@ -32,5 +32,15 @@ const gfx = {
 	},
 	addIcon: (parent) => {
 		$("#" + parent).append(gfx.icon);
+	},
+	addPulse: async (x, y, i) => {
+		$("#background").append(`<div id="_${i}" class="pulse"></div>`);
+		$(`#_${i}`).css("left", x);
+		$(`#_${i}`).css("top", y);
+
+		$(`#_${i}`).addClass("appear");
+		await timeout(1000);
+		$(`#_${i}`).removeClass("appear");
+		$(`#_${i}`).addClass("pulsate");
 	}
 }

@@ -7,18 +7,84 @@
                 {
                     "name": "car",
                     "img": "images/tiles/car.svg",
+                    "full": "images/full/car.png",
+                    "obj": "images/obj/car.png",
                     "stick": {
-                        "x": 263,
-                        "y": 175
+                        "x": 255,
+                        "y": 166
                     }
                 },
                 {
                     "name": "character",
                     "img": "images/tiles/character.svg",
                     "stick": {
-                        "x": 500,
-                        "y": 175
+                        "x": 272,
+                        "y": 394
                     }
+                },
+                {
+                    "name": "chemicals",
+                    "img": "images/tiles/chemicals.svg",
+                    "stick": {
+                        "x": 513,
+                        "y": 350
+                    }
+                },
+                {
+                    "name": "duck",
+                    "img": "images/tiles/duck.svg",
+                    "stick": {
+                        "x": 408,
+                        "y": 246
+                    }
+                },
+                {
+                    "name": "egg",
+                    "img": "images/tiles/egg.svg",
+                    "stick": {
+                        "x": 571,
+                        "y": 38
+                    }
+                },
+                {
+                    "name": "one",
+                    "img": "images/tiles/1.svg"
+                },
+                {
+                    "name": "two",
+                    "img": "images/tiles/2.svg"
+                },
+                {
+                    "name": "three",
+                    "img": "images/tiles/3.svg"
+                },
+                {
+                    "name": "four",
+                    "img": "images/tiles/4.svg"
+                },
+                {
+                    "name": "five",
+                    "img": "images/tiles/5.svg"
+                },
+                {
+                    "name": "six",
+                    "img": "images/tiles/6.svg"
+                },
+                {
+                    "name": "seven",
+                    "img": "images/tiles/7.svg"
+                },
+                {
+                    "name": "eight",
+                    "img": "images/tiles/8.svg"
+                },
+                {
+                    "name": "nine",
+                    "img": "images/tiles/9.svg"
+                },
+                {
+                    "name": "ten",
+                    "img": "images/tiles/10.svg"
                 }
             ]
         }

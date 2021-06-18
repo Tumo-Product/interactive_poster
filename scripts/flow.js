@@ -3,6 +3,7 @@ let icons = [];
 let context;
 let game;
 let positions = [];
+let popupDone = false;
 
 let config = {
     type: Phaser.AUTO,
@@ -28,7 +29,7 @@ const onPageLoad = async () => {
         bgPath = set.background;
 
         for (let icon of set.icons) {
-            icons.push({ name: icon.name, img: icon.img, stick: { x: icon.stick.x, y: icon.stick.y } });
+            icons.push(icon);
         }
         $("#background p").html(set.intro);
     }
@@ -49,9 +50,12 @@ const addIcons = () => {
 
 const onPlay = async () => {
     await gfx.onPlay();
+    addPulses();
     addIcons();
     updatePositions();
     window.context.initialize();
+    await timeout (1000);
+    popupDone = true;
 }
 
 const updatePositions = () => {
@@ -60,6 +64,15 @@ const updatePositions = () => {
         positions[i].left += 44;
         positions[i].top += 44 + parseInt($(this).css('marginTop'), 10);
     });
+}
+
+const addPulses = async () => {
+    for (let i = 0; i < icons.length; i++) {
+        if (icons[i].stick === undefined) continue;
+
+        await timeout((Math.floor(Math.random() * 1000) + 1));
+        gfx.addPulse(icons[i].stick.x + 5, icons[i].stick.y + 5, i);
+    }
 }
 
 $(onPageLoad());
