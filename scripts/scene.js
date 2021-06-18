@@ -41,8 +41,6 @@ class MainScene extends Phaser.Scene {
             this.input.dragDistanceThreshold = 5;
 
             stickPositions[i] = { x: icon.stick.x + 165, y: icon.stick.y + 9 };
-            this.add.image(stickPositions[i].x, stickPositions[i].y, i).setOrigin(0.5);
-            console.log(stickPositions[i]);
 
             circles[i].startingIndex = i;
             circles[i].stickIndex = i;
@@ -57,17 +55,18 @@ class MainScene extends Phaser.Scene {
     async update() {
         updatePositions();
 
-        // console.log(dragging);
         if (circles.length > 0 && positions !== undefined && !dragging) {
             for (let i = 0; i < circles.length; i++) {
-                circles[i].y = positions[i].top;
-                startingPositions[i] = { x: circles[i].x, y: circles[i].y };
+                if (!circles[i].stuck) {
+                    circles[i].y = positions[i].top;
+                    startingPositions[i] = { x: circles[i].x, y: circles[i].y };
+                }
             }
         }
     }
 
     async dragstart(pointer, gameObject) {
-        gameObject.setTint(0xff0000);
+        gameObject.setTint(0xfefefe);
     }
 
     async drag(pointer, gameObject, dragX, dragY) {
@@ -87,20 +86,23 @@ class MainScene extends Phaser.Scene {
             distances[i] = Phaser.Math.Distance.Between(gameObject.x, gameObject.y, stickPositions[i].x, stickPositions[i].y);
         }
 
-        let smallestDistance = distances[0];
-        for (let i = 0; i < distances.length; i++) {
-            if (distances[i] < smallestDistance) {
-                smallestDistance = distances[i];
-            }
+        let smallest = { dist:distances[0], index: 0 };
 
-            if (smallestDistance < safeDistance) stickIndex = i;
+        for (let i = 0; i < distances.length; i++) {
+            if (distances[i] < smallest.dist) {
+                smallest.dist = distances[i];
+                smallest.index = i;
+            }
         }
-        console.log(smallestDistance);
+        
+        if (smallest.dist < safeDistance) {
+            stickIndex = smallest.index;
+        }
 
         if (stickIndex > -1) {
             gameObject.x = stickPositions[stickIndex].x;
             gameObject.y = stickPositions[stickIndex].y;
-            console.log(stickPositions[stickIndex]);
+            gameObject.stuck = true;
 
             if (gameObject.stickIndex == stickIndex) { 
                 lockedIndex++;
@@ -109,12 +111,14 @@ class MainScene extends Phaser.Scene {
         } else {
             gameObject.x = startingPositions[gameObject.startingIndex].x;
             gameObject.y = startingPositions[gameObject.startingIndex].y;
+            gameObject.stuck = false;
+            console.log(stickIndex);
         }
 
         if (lockedIndex == circles.length) {
             $(function() {
-                // $(".front").addClass("frontFlip");
-                // $(".back").addClass("backFlip");
+                $(".front").addClass("frontFlip");
+                $(".back").addClass("backFlip");
             });
         }
     }
