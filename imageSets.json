@@ -17,6 +17,8 @@
                 {
                     "name": "character",
                     "img": "images/tiles/character.svg",
+                    "full": "images/full/character.png",
+                    "obj": "images/obj/character.png",
                     "stick": {
                         "x": 272,
                         "y": 394
@@ -25,6 +27,8 @@
                 {
                     "name": "chemicals",
                     "img": "images/tiles/chemicals.svg",
+                    "full": "images/full/chemicals.png",
+                    "obj": "images/obj/chemicals.png",
                     "stick": {
                         "x": 513,
                         "y": 350
@@ -33,6 +37,8 @@
                 {
                     "name": "duck",
                     "img": "images/tiles/duck.svg",
+                    "full": "images/full/duck.png",
+                    "obj": "images/obj/duck.png",
                     "stick": {
                         "x": 408,
                         "y": 246
@@ -41,6 +47,8 @@
                 {
                     "name": "egg",
                     "img": "images/tiles/egg.svg",
+                    "full": "images/full/egg.png",
+                    "obj": "images/obj/egg.png",
                     "stick": {
                         "x": 571,
                         "y": 38
@@ -48,43 +56,53 @@
                 },
                 {
                     "name": "one",
-                    "img": "images/tiles/1.svg"
+                    "img": "images/tiles/1.svg",
+                    "obj": "images/obj/1.png"
                 },
                 {
                     "name": "two",
-                    "img": "images/tiles/2.svg"
+                    "img": "images/tiles/2.svg",
+                    "obj": "images/obj/2.png"
                 },
                 {
                     "name": "three",
-                    "img": "images/tiles/3.svg"
+                    "img": "images/tiles/3.svg",
+                    "obj": "images/obj/3.png"
                 },
                 {
                     "name": "four",
-                    "img": "images/tiles/4.svg"
+                    "img": "images/tiles/4.svg",
+                    "obj": "images/obj/4.png"
                 },
                 {
                     "name": "five",
-                    "img": "images/tiles/5.svg"
+                    "img": "images/tiles/5.svg",
+                    "obj": "images/obj/5.png"
                 },
                 {
                     "name": "six",
-                    "img": "images/tiles/6.svg"
+                    "img": "images/tiles/6.svg",
+                    "obj": "images/obj/6.png"
                 },
                 {
                     "name": "seven",
-                    "img": "images/tiles/7.svg"
+                    "img": "images/tiles/7.svg",
+                    "obj": "images/obj/7.png"
                 },
                 {
                     "name": "eight",
-                    "img": "images/tiles/8.svg"
+                    "img": "images/tiles/8.svg",
+                    "obj": "images/obj/8.png"
                 },
                 {
                     "name": "nine",
-                    "img": "images/tiles/9.svg"
+                    "img": "images/tiles/9.svg",
+                    "obj": "images/obj/9.png"
                 },
                 {
                     "name": "ten",
-                    "img": "images/tiles/10.svg"
+                    "img": "images/tiles/10.svg",
+                    "obj": "images/obj/10.png"
                 }
             ]
         }

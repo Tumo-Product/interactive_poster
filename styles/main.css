@@ -49,6 +49,11 @@ body {
     border-radius: 15px;
     pointer-events: none;
     transition: 2s;
+    width: 657px;
+    height: 433px;
+}
+
+#poster {
     opacity: 0;
 }
 
@@ -77,7 +82,6 @@ body {
 
 #iconsOverlay {
     pointer-events: none;
-    transition: 1s;
     position: absolute;
     width: 130px;
     height: 50px;
@@ -120,17 +124,17 @@ body {
 
 #parent {
     overflow: auto;
-    animation: popup 1s ease-out;
+    animation: popup 1s;
     width: 120px;
     padding-left: 16px;
 }
 
 @keyframes popup {
     from {
-        margin-top: 600px;
+        padding-top: 1200px;
     }
     to {
-        margin: 0;
+        padding-top: 0;
     }
 }
 
@@ -166,6 +170,7 @@ body {
 }
 
 .grow {
+    transition: 1s;
     left: 36px !important;
     top: 50px !important;
     width: 130px !important;
@@ -190,6 +195,7 @@ canvas {
     right: 42px;
     top: 50px;
     bottom: 49px;
+    transition: 1s;
 }
 
 #items {

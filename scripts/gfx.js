@@ -30,6 +30,15 @@ const gfx = {
 		await timeout(1000);
 		$("#play").remove();
 	},
+	addIcons: () => {
+		$("#icons").append(`<div id="parent"></div>`);
+	
+		for (let i = 0; i < icons.length; i++) {
+			gfx.addIcon("parent");
+		}
+
+		$("#parent").scrollTop(($("#parent").prop("scrollHeight") / 2) - 1150);
+	},
 	addIcon: (parent) => {
 		$("#" + parent).append(gfx.icon);
 	},

@@ -9,7 +9,6 @@ let config = {
     type: Phaser.AUTO,
     parent: 'canvas',
     scale: {
-        _parent: 'canvas',
         width: width,
         height: height
     },
@@ -40,18 +39,10 @@ const onPageLoad = async () => {
     game = new Phaser.Game(config);
 }
 
-const addIcons = () => {
-    $("#icons").append(`<div id="parent"></div>`);
-
-    for (let i = 0; i < icons.length; i++) {
-        gfx.addIcon("parent");
-    }
-}
-
 const onPlay = async () => {
     await gfx.onPlay();
     addPulses();
-    addIcons();
+    gfx.addIcons();
     updatePositions();
     window.context.initialize();
     await timeout (1000);
