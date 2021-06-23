@@ -43,3 +43,8 @@
     top: 275px !important;
     height: 0px !important;
 }
+
+.center {
+    transition: 1s;
+    left: 112.5px !important;
+}

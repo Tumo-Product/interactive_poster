@@ -54,13 +54,14 @@ class MainScene extends Phaser.Scene {
             this.input.dragDistanceThreshold = 5;
 
             if (icon.stick !== undefined) {
-                stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y };
+                stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y, occupied: false };
                 circles[i].stickIndex = i;
                 stickCount++;
             }
 
             if (icon.full !== undefined) circles[i].full = icon.full;
             circles[i].obj = "obj_" + icon.name;
+            circles[i].stuckIn = -1;
 
             objects[i] = this.add.image(0, 0, circles[i].obj);
             objects[i].visible = false;
@@ -109,10 +110,15 @@ class MainScene extends Phaser.Scene {
 
     async dragstart(pointer, gameObject) {
         gameObject.alpha = 1;
+
         if (gameObject.objImage !== undefined) {
             gameObject.objImage.visible = false;
         }
-        gameObject.setTint(0xfefefe);
+
+        if (gameObject.stuckIn > -1) {
+            stickPositions[gameObject.stuckIn].occupied = false;
+            gameObject.stuckIn = -1;
+        }
     }
 
     async drag(pointer, gameObject, dragX, dragY) {
@@ -147,24 +153,34 @@ class MainScene extends Phaser.Scene {
         let index = circles.indexOf(gameObject);
 
         if (stickIndex > -1) {
-            gameObject.x = stickPositions[stickIndex].x;
-            gameObject.y = stickPositions[stickIndex].y;
+            if (!stickPositions[stickIndex].occupied) {
+                gameObject.x = stickPositions[stickIndex].x;
+                gameObject.y = stickPositions[stickIndex].y;
+                stickPositions[stickIndex].occupied = true;
+                gameObject.stuckIn = stickIndex;
 
-            if (gameObject.stickIndex == stickIndex) {
-                lockedIndex++;
+                if (gameObject.stickIndex == stickIndex) {
+                    lockedIndex++;
 
-                $(`#_${stickIndex}`).hide();
-                gameObject.visible = false;
+                    $(`#_${stickIndex}`).hide();
+                    gameObject.visible = false;
 
-                $("#background img").last().after(`<img src="${gameObject.full}">`);
+                    $(".front #background img").last().after(`<img src="${gameObject.full}">`);
+                    gfx.toggleFlash("green");
+                } else {
+                    gfx.toggleFlash("red");
+                    gameObject.alpha = 0.001;
+                    let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
+                    obj.setScale(0.25);
+                    gameObject.objImage = obj;
+                }
+
+                gameObject.onCanvas = true;
             } else {
-                gameObject.alpha = 0.001;
-                let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
-                obj.setScale(0.25);
-                gameObject.objImage = obj;
+                gameObject.x = startingPositions[index].x;
+                gameObject.y = startingPositions[index].y;
+                gameObject.onCanvas = false;
             }
-
-            gameObject.onCanvas = true;
         }
         else {
             let x = (gameObject.x - gameObject.displayWidth / 2) + widthOffset;
@@ -172,8 +188,8 @@ class MainScene extends Phaser.Scene {
             let yBottom = (gameObject.y + gameObject.displayHeight / 2) - widthOffset;
 
             if (x < posterOffset.x || yTop < posterOffset.y || yBottom > height - posterOffset.y) {
-                gameObject.x = startingPositions[circles.indexOf(gameObject)].x;
-                gameObject.y = startingPositions[circles.indexOf(gameObject)].y;
+                gameObject.x = startingPositions[index].x;
+                gameObject.y = startingPositions[index].y;
 
                 gameObject.onCanvas = false;
             } else {
@@ -182,14 +198,7 @@ class MainScene extends Phaser.Scene {
         }
 
         if (lockedIndex == stickCount) {
-            $("#icons").addClass("shrink");
-            $("#iconsOverlay").addClass("shrink");
-            $("#canvas").addClass("shrink");
-
-            await timeout(1000);
-
-            $(".front").addClass("frontFlip");
-            $(".back").addClass("backFlip");
+            gfx.end();
         }
     }
 

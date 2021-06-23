@@ -22,8 +22,8 @@ const gfx = {
 	onPlay: async () => {
 		$("#icons").addClass("grow");
 		$("#iconsOverlay").addClass("grow");
-		$("#background p").remove();
-		$("#background img").css("opacity", 1);
+		$(".front #background p").remove();
+		$(".front #background img").css("opacity", 1);
 		gfx.toggleCanvas();
 		await timeout(500);
 		$("#play").addClass("offscreen");
@@ -43,7 +43,7 @@ const gfx = {
 		$("#" + parent).append(gfx.icon);
 	},
 	addPulse: async (x, y, i) => {
-		$("#background").append(`<div id="_${i}" class="pulse"></div>`);
+		$(".front #background").append(`<div id="_${i}" class="pulse"></div>`);
 		$(`#_${i}`).css("left", x);
 		$(`#_${i}`).css("top", y);
 
@@ -51,5 +51,23 @@ const gfx = {
 		await timeout(1000);
 		$(`#_${i}`).removeClass("appear");
 		$(`#_${i}`).addClass("pulsate");
+	},
+	toggleFlash: async(color) => {
+		$(`#${color}`).css("opacity", 1);
+		await timeout(500);
+		$(`#${color}`).css("opacity", 0);
+	},
+	end: async() => {
+		$("#canvas").attr("style", "opacity: 0 !important");
+		await timeout(1000);
+		$("#icons").addClass("shrink");
+		$("#iconsOverlay").addClass("shrink");
+
+		await timeout(1000);
+		$(".front #background").addClass("center");		
+		await timeout(1000);
+
+		$(".front").addClass("frontFlip");
+		$(".back").addClass("backFlip");
 	}
 }
