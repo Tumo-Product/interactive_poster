@@ -47,14 +47,14 @@ body {
     width: 900px;
     opacity: 0.5;
     transform: rotate(180deg);
-    background: linear-gradient(180deg, rgba(238,238,238,0) 0%, #93E2B6 100%);
+    background: linear-gradient(180deg, rgba(238,238,238,0) 0%, #13da59 100%);
 }
 
 #green div:last-child {
     height: 151px;
     width: 900px;
     opacity: 0.5;
-    background: linear-gradient(180deg, rgba(238,238,238,0) 0%, #93E2B6 100%);
+    background: linear-gradient(180deg, rgba(238,238,238,0) 0%, #13da59 100%);
 }
 
 #red div:first-child {
@@ -200,6 +200,7 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 16px;
+    transition: 0.5s;
 }
 
 .icon div {

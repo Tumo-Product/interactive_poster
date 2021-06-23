@@ -92,19 +92,17 @@ class MainScene extends Phaser.Scene {
     async update() {
         updatePositions();
 
-        if (scrolling || !popupDone) {
-            if (circles.length > 0 && positions !== undefined && !dragging) {
-                for (let i = 0; i < circles.length; i++) {
-                    if (!circles[i].onCanvas) {
-                        circles[i].y = positions[i].top;
-                        startingPositions[i] = { x: circles[i].x, y: circles[i].y };
-                    }
+        if (circles.length > 0 && positions !== undefined && !dragging) {
+            for (let i = 0; i < circles.length; i++) {
+                if (!circles[i].onCanvas) {
+                    circles[i].y = positions[i].top;
+                    startingPositions[i] = { x: circles[i].x, y: circles[i].y };
                 }
             }
-        } else {
-            for (let i = 0; i < startingPositions.length; i++) {
-                startingPositions[i] = { x: startingPositions[i].x, y: positions[i].top };
-            }
+        }
+        
+        for (let i = 0; i < startingPositions.length; i++) {
+            startingPositions[i] = { x: startingPositions[i].x, y: positions[i].top };
         }
     }
 
@@ -167,6 +165,8 @@ class MainScene extends Phaser.Scene {
 
                     $(".front #background img").last().after(`<img src="${gameObject.full}">`);
                     gfx.toggleFlash("green");
+
+                    gfx.disableIcon(gfx.icons[index]);
                 } else {
                     gfx.toggleFlash("red");
                     gameObject.alpha = 0.001;

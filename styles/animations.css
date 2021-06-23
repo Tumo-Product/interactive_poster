@@ -48,3 +48,12 @@
     transition: 1s;
     left: 112.5px !important;
 }
+
+.removeIconOpacity {
+    opacity: 0;
+}
+
+.shrinkIcon {
+    height: 0px !important;
+    margin: 0;
+}

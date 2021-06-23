@@ -5,6 +5,7 @@ const gfx = {
 	`<div class="icon">
 		<div></div>
 	</div>`,
+	icons: [],
 	toggleLoadingScreen: () => {
 		if (gfx.loaderOpen) {
 			$("#loadingScreen").hide();
@@ -38,6 +39,15 @@ const gfx = {
 		}
 
 		$("#parent").scrollTop(($("#parent").prop("scrollHeight") / 2) - 1150);
+
+		$(".icon").each(function() {
+			gfx.icons.push(this);
+		});
+	},
+	disableIcon: async (icon) => {
+		$(icon).addClass("removeIconOpacity");
+		await timeout(400);
+		$(icon).addClass("shrinkIcon");
 	},
 	addIcon: (parent) => {
 		$("#" + parent).append(gfx.icon);
@@ -65,7 +75,7 @@ const gfx = {
 
 		await timeout(1000);
 		$(".front #background").addClass("center");		
-		await timeout(1000);
+		await timeout(3000);
 
 		$(".front").addClass("frontFlip");
 		$(".back").addClass("backFlip");
