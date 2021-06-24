@@ -8,6 +8,11 @@
     src: url('../fonts/FedraSansAltPro/FedraSansAltPro-Book.otf');
 }
 
+@font-face{
+    font-family: FedraDemi;
+    src: url('../fonts/FedraSansAltPro/FedraSansAltPro-Demi.otf');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -18,6 +23,20 @@
 
 body {
     background-color: #F3F3F3;
+}
+
+.back p {
+	overflow: visible;
+	height: 78.81px;
+	width: 459.9px;
+	font-family: FedraDemi;
+	letter-spacing: 0;
+	color: #FFFFFF !important;
+	font-size: 12px !important;
+	line-height: 15px !important;
+	position: absolute;
+	left: 99px;
+	top: 262px;
 }
 
 .flash {

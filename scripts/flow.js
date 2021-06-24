@@ -30,10 +30,10 @@ const onPageLoad = async () => {
         for (let icon of set.icons) {
             icons.push(icon);
         }
-        $("#background p").html(set.intro);
+        $(".front #background p").html(set.intro);
     }
 
-    $("#background img").attr("src", bgPath);
+    $(".front #background img").attr("src", bgPath);
     gfx.toggleLoadingScreen();
 
     game = new Phaser.Game(config);
