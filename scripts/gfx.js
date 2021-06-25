@@ -74,7 +74,7 @@ const gfx = {
 		$("#iconsOverlay").addClass("shrink");
 
 		await timeout(1000);
-		$(".front #background").addClass("center");		
+		$(".front #background").addClass("center");	
 		await timeout(3000);
 
 		$(".front").addClass("frontFlip");
