@@ -7,7 +7,7 @@ let circles = [];
 let distances = [];
 
 let safeDistance = 50;
-let lockedIndex = 5;
+let lockedIndex = 0;
 let scrollDelta = 0;
 
 let dragging = false;
