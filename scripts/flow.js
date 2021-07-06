@@ -21,7 +21,7 @@ const timeout = (ms) => {
 }
 
 const onPageLoad = async () => {
-    let data = await parser.dataFetch("../imageSets.json");
+    let data = await parser.dataFetch(window.location.href + "imageSets.json");
     let sets = data.sets;
 
     for (let set of sets) {
