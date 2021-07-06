@@ -1,4 +1,3 @@
-let bgPath = "images/background.jpg";
 let icons = [];
 let context;
 let game;
@@ -30,10 +29,11 @@ const onPageLoad = async () => {
         for (let icon of set.icons) {
             icons.push(icon);
         }
-        $(".front #background p").html(set.intro);
-    }
 
-    $(".front #background img").attr("src", bgPath);
+        $(".front #background p").html(set.intro);
+		$("#poster").attr("src", window.location.href + set.background);
+    	$("#outcome").attr("src", window.location.href + set.outcome);
+    }
 
     game = new Phaser.Game(config);
 

@@ -3,6 +3,7 @@
         {
             "intro": "Intro text goes here",
             "background": "images/poster.jpg",
+            "outcome": "images/outcome.png",
             "icons": [
                 {
                     "name": "car",
