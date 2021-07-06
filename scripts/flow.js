@@ -37,6 +37,7 @@ const onPageLoad = async () => {
 
     game = new Phaser.Game(config);
 
+	await timeout(1000);
     gfx.toggleLoadingScreen();
 }
 
