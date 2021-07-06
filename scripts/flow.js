@@ -34,9 +34,10 @@ const onPageLoad = async () => {
     }
 
     $(".front #background img").attr("src", bgPath);
-    gfx.toggleLoadingScreen();
 
     game = new Phaser.Game(config);
+
+    gfx.toggleLoadingScreen();
 }
 
 const onPlay = async () => {
