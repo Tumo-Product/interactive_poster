@@ -29,10 +29,10 @@ class MainScene extends Phaser.Scene {
 
     async preload() {
         for (let i = 0; i < icons.length; i++) {
-            this.load.svg(icons[i].name, "../" + icons[i].img);
+            this.load.svg(icons[i].name, window.location.href + icons[i].img);
 
             if (icons[i].obj !== undefined) {
-                this.load.image("obj_" + icons[i].name, "../" + icons[i].obj);
+                this.load.image("obj_" + icons[i].name, window.location.href + icons[i].obj);
             }
         }
 
