@@ -62,6 +62,10 @@ const gfx = {
 		$(`#_${i}`).removeClass("appear");
 		$(`#_${i}`).addClass("pulsate");
 	},
+	addFullImage: (image, index) => {
+		$("#background").append(`<img id="f_${index}" src="${window.location.href + image}">`);
+		$(`#f_${index}`).hide();
+	},
 	toggleFlash: async(color) => {
 		$(`#${color}`).css("opacity", 1);
 		await timeout(500);

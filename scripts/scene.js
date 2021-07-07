@@ -163,7 +163,7 @@ class MainScene extends Phaser.Scene {
                     $(`#_${stickIndex}`).hide();
                     gameObject.visible = false;
 
-                    $(".front #background img").last().after(`<img src="${gameObject.full}">`);
+                    $(`#f_${stickIndex}`).show();
                     gfx.toggleFlash("green");
 
                     gfx.disableIcon(gfx.icons[index]);

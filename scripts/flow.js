@@ -26,8 +26,13 @@ const onPageLoad = async () => {
     for (let set of sets) {
         bgPath = set.background;
 
-        for (let icon of set.icons) {
+        for (let i = 0; i < set.icons.length; i++) {
+            let icon = set.icons[i];
             icons.push(icon);
+
+            if (icon.full != undefined) {
+                gfx.addFullImage(icon.full, i);
+            }
         }
 
         $(".front #background p").html(set.intro);
