@@ -127,7 +127,6 @@ class MainScene extends Phaser.Scene {
 
     async dragend(pointer, gameObject) {
         dragging = false;
-        gameObject.clearTint();
 
         let stickIndex = -1;
 
@@ -157,6 +156,12 @@ class MainScene extends Phaser.Scene {
                 stickPositions[stickIndex].occupied = true;
                 gameObject.stuckIn = stickIndex;
 
+                gameObject.onCanvas = true;
+
+                if (canPlace(gameObject, index)) {
+                    return;
+                }
+
                 if (gameObject.stickIndex == stickIndex) {
                     lockedIndex++;
 
@@ -175,7 +180,6 @@ class MainScene extends Phaser.Scene {
                     gameObject.objImage = obj;
                 }
 
-                gameObject.onCanvas = true;
             } else {
                 gameObject.x = startingPositions[index].x;
                 gameObject.y = startingPositions[index].y;
@@ -194,6 +198,10 @@ class MainScene extends Phaser.Scene {
                 gameObject.onCanvas = false;
             } else {
                 gameObject.onCanvas = true;
+
+                if (canPlace(gameObject, index)) {
+                    return;
+                }
             }
         }
 
@@ -218,5 +226,24 @@ class MainScene extends Phaser.Scene {
 
         this.scr = $("#parent").scrollTop() + deltaY;
         $("#parent").scrollTop(this.scr);
+    }
+}
+
+const canPlace = (gameObject, index) => {
+    let objectsOnCanvas = 0;
+    for (let i = 0; i < circles.length; i++) {
+        if (circles[i].onCanvas && circles[i].stickIndex == undefined) {
+            objectsOnCanvas++;
+        }
+    }
+
+    console.log(objectsOnCanvas);
+
+    if (objectsOnCanvas > $(".pulse").length && gameObject.stickIndex == undefined) {
+        gameObject.x = startingPositions[index].x;
+        gameObject.y = startingPositions[index].y;
+
+        gameObject.onCanvas = false;
+        return true;
     }
 }
