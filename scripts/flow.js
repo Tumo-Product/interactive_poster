@@ -47,6 +47,8 @@ const onPageLoad = async () => {
 }
 
 const onPlay = async () => {
+    $("#play").attr("onclick", "");
+    gfx.toggleCanvas();
     await gfx.onPlay();
     addPulses();
     gfx.addIcons();

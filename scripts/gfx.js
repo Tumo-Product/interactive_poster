@@ -25,7 +25,6 @@ const gfx = {
 		$("#iconsOverlay").addClass("grow");
 		$(".front #background p").remove();
 		$(".front #background img").css("opacity", 1);
-		gfx.toggleCanvas();
 		await timeout(500);
 		$("#play").addClass("offscreen");
 		await timeout(1000);
