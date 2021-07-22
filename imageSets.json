@@ -35,7 +35,7 @@
             "obj": "images/poster3/obj/train.png",
             "stick": {
                 "x": 237,
-                "y": 372
+                "y": 360
             }
         },
         {
@@ -44,7 +44,7 @@
             "full": "images/poster3/full/bus.png",
             "obj": "images/poster3/obj/bus.png",
             "stick": {
-                "x": 521,
+                "x": 513,
                 "y": 232
             }
         },
@@ -54,7 +54,7 @@
             "full": "images/poster3/full/bicycle.png",
             "obj": "images/poster3/obj/bicycle.png",
             "stick": {
-                "x": 287,
+                "x": 258,
                 "y": 116
             }
         }
