@@ -29,10 +29,10 @@ class MainScene extends Phaser.Scene {
 
     async preload() {
         for (let i = 0; i < icons.length; i++) {
-            this.load.svg(icons[i].name, window.location.href + icons[i].img);
+            this.load.svg(icons[i].name, href + icons[i].img);
 
             if (icons[i].obj !== undefined) {
-                this.load.image("obj_" + icons[i].name, window.location.href + icons[i].obj);
+                this.load.image("obj_" + icons[i].name, href + icons[i].obj);
             }
         }
 
@@ -236,8 +236,6 @@ const canPlace = (gameObject, index) => {
             objectsOnCanvas++;
         }
     }
-
-    console.log(objectsOnCanvas);
 
     if (objectsOnCanvas > $(".pulse").length && gameObject.stickIndex == undefined) {
         gameObject.x = startingPositions[index].x;

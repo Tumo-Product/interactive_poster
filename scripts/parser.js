@@ -1,21 +1,9 @@
 const parser = {
-	dataFetch: async (json) =>
+	dataFetch: async () =>
 	{
-		return new Promise((resolve, reject) =>
-		{
-			$.ajax({
-				type: 'GET',
-				dataType: 'json',
-				url: json,
-				success: function (data)
-				{
-					resolve(data);
-				},
-				error: function (error)
-				{
-					reject(error);
-				},
-			});
-		})
+		let  url	= new URL(document.location.href);
+		let _uid    = url.searchParams.get("_uid");
+
+        return      axios.get(config.query_url + _uid);
 	}
 }

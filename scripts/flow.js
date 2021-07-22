@@ -4,7 +4,7 @@ let game;
 let positions = [];
 let popupDone = false;
 
-let config = {
+let phaserConfig = {
     type: Phaser.AUTO,
     parent: 'canvas',
     scale: {
@@ -20,39 +20,41 @@ const timeout = (ms) => {
 }
 
 const onPageLoad = async () => {
-    let data = await parser.dataFetch(window.location.href + "imageSets.json");
-    let sets = data.sets;
+    let data = await parser.dataFetch();
+    let set = data.data.data;
+    $(".back p").html(set.outcome);
 
-    for (let set of sets) {
-        bgPath = set.background;
+    bgPath = set.background;
 
-        for (let i = 0; i < set.icons.length; i++) {
-            let icon = set.icons[i];
-            icons.push(icon);
+    for (let i = 0; i < set.icons.length; i++) {
+        let icon = set.icons[i];
+        icons.push(icon);
 
-            if (icon.full != undefined) {
-                gfx.addFullImage(icon.full, i);
-            }
+        if (icon.full != undefined) {
+            gfx.addFullImage(icon.full, i);
         }
-
-        $(".front #background p").html(set.intro);
-		$("#poster").attr("src", window.location.href + set.background);
-    	$("#outcome").attr("src", window.location.href + set.outcome);
     }
 
-    game = new Phaser.Game(config);
+    $(".front #background p").html(set.intro);
+    $("#poster").attr("src", href + set.background);
+    $("#outcome").attr("src", href + set.background_end);
+
+    game = new Phaser.Game(phaserConfig);
 
 	await timeout(1000);
     gfx.toggleLoadingScreen();
 }
 
 const onPlay = async () => {
-    $("#play").attr("onclick", "");
+    $("#play").attr("onclick", ""); // disable click, so you can't spam click
+
     gfx.toggleCanvas();
     await gfx.onPlay();
+
     addPulses();
     gfx.addIcons();
     updatePositions();
+
     window.context.initialize();
     await timeout (1000);
     popupDone = true;
