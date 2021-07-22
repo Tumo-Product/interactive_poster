@@ -14,8 +14,8 @@
             "full": "images/poster3/full/car.png",
             "obj": "images/poster3/obj/car.png",
             "stick": {
-                "x": 255,
-                "y": 166
+                "x": 89,
+                "y": 232
             }
         },
         {
@@ -24,8 +24,8 @@
             "full": "images/poster3/full/person.png",
             "obj": "images/poster3/obj/person.png",
             "stick": {
-                "x": 272,
-                "y": 394
+                "x": 393,
+                "y": 150
             }
         },
         {
@@ -34,8 +34,8 @@
             "full": "images/poster3/full/train.png",
             "obj": "images/poster3/obj/train.png",
             "stick": {
-                "x": 513,
-                "y": 350
+                "x": 237,
+                "y": 372
             }
         },
         {
@@ -44,8 +44,8 @@
             "full": "images/poster3/full/bus.png",
             "obj": "images/poster3/obj/bus.png",
             "stick": {
-                "x": 408,
-                "y": 246
+                "x": 521,
+                "y": 232
             }
         },
         {
@@ -54,8 +54,8 @@
             "full": "images/poster3/full/bicycle.png",
             "obj": "images/poster3/obj/bicycle.png",
             "stick": {
-                "x": 571,
-                "y": 38
+                "x": 287,
+                "y": 116
             }
         }
     ]
