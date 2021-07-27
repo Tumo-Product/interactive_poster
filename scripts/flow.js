@@ -3,6 +3,7 @@ let context;
 let game;
 let positions = [];
 let popupDone = false;
+let outcomeLength = 1;
 
 let phaserConfig = {
     type: Phaser.AUTO,
@@ -22,7 +23,6 @@ const timeout = (ms) => {
 const onPageLoad = async () => {
     let data = await parser.dataFetch();
     let set = data.data.data;
-    $(".back p").html(set.outcome);
 
     bgPath = set.background;
 
@@ -37,9 +37,20 @@ const onPageLoad = async () => {
 
     $(".front #background p").html(set.intro);
     $("#poster").attr("src", href + set.background);
-    $("#outcome").attr("src", href + set.background_end);
 
     game = new Phaser.Game(phaserConfig);
+
+    if (Array.isArray(set.background_end)) {
+        let outcomeTexts = parser.getOutcomeTexts(set.outcome);
+
+        outcomeLength = set.background_end.length;
+
+        for (let i = 0; i < outcomeLength; i++) {
+            gfx.addOutcome(i, set.background_end[i], outcomeTexts[i]);
+        }
+    } else {
+        gfx.addOutcome(0, set.background_end);
+    }
 
 	await timeout(1000);
     gfx.toggleLoadingScreen();

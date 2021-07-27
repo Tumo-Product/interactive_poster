@@ -67,3 +67,8 @@
 	transform: perspective(900px) rotateY(0deg);
     z-index: 2;
 }
+
+.showButton {
+    display: block !important;
+    opacity: 1 !important;
+}

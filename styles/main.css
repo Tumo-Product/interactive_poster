@@ -91,6 +91,58 @@ body {
     background: linear-gradient(180deg, rgba(238,238,238,0) 0%, #FF6C70 100%);
 }
 
+#left, #right {
+    height: 40px;
+    width: 40px;
+    background-color: #F3F3F3;
+    box-shadow: 2px -1px 2px 0 #FEFEFE, -1px 2px 2px 0 rgba(0,0,0,0.16);
+    border-radius: 100%;
+    position: absolute;
+    top: 267px;
+    cursor: pointer;
+    display: none;
+    opacity: 0;
+    transition: 0.5s;
+}
+
+#left {
+    left: 38px;
+}
+
+#right {
+    transform: scaleX(-1);
+    right: 38px;
+}
+
+#right img {
+    transform: scaleX(-1);
+}
+
+#left img, #right img {
+    margin-top: 1px;
+    width:  60%;
+    height: 60%;
+    position: relative;
+}
+
+.circle {
+    height: 34px;
+    width: 34px;
+    background-color: #F3F3F3;
+    box-shadow: -1px 1px 1px 0 rgba(254,254,254,0.48);
+    border-radius: 100%;
+    position: relative;
+    margin: 3px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+
+.circle:active {
+    box-shadow: none;
+}
+
 .container {
 	width: 100%;
     height: 100vh;
@@ -115,13 +167,24 @@ body {
     z-index: -1;
 }
 
-#background img {
+#background img, #outcome {
     position: absolute;
     border-radius: 15px;
     pointer-events: none;
     transition: 2s;
     width: 657px;
     height: 433px;
+}
+
+#outcome {
+    border-radius: 15px;
+}
+
+.outcome {
+    width: 657px;
+    height: 433px;
+    position: absolute;
+    transition: 0.5s;
 }
 
 #poster {
