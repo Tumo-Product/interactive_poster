@@ -40,16 +40,19 @@ const onPageLoad = async () => {
 
     game = new Phaser.Game(phaserConfig);
 
-    if (Array.isArray(set.background_end)) {
+    let backgrounds = set.background_end.split(",");
+    console.log(backgrounds);
+
+    if (Array.isArray(backgrounds)) {
         let outcomeTexts = parser.getOutcomeTexts(set.outcome);
 
-        outcomeLength = set.background_end.length;
+        outcomeLength = backgrounds.length;
 
         for (let i = 0; i < outcomeLength; i++) {
-            gfx.addOutcome(i, set.background_end[i], outcomeTexts[i]);
+            gfx.addOutcome(i, backgrounds[i], outcomeTexts[i]);
         }
     } else {
-        gfx.addOutcome(0, set.background_end);
+        gfx.addOutcome(0, backgrounds);
     }
 
 	await timeout(1000);
