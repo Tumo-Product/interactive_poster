@@ -40,7 +40,7 @@ const onPageLoad = async () => {
 
     game = new Phaser.Game(phaserConfig);
 
-    let backgrounds = set.background_end.split(",");
+    let backgrounds = set.background_end.split("$");
     console.log(backgrounds);
 
     if (Array.isArray(backgrounds)) {
