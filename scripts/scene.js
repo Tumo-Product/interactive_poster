@@ -28,15 +28,19 @@ class MainScene extends Phaser.Scene {
     }
 
     async preload() {
+        window.context = this;
+    }
+
+    async create() {
         for (let i = 0; i < icons.length; i++) {
-            this.load.svg(icons[i].name, href + icons[i].img);
+            // this.load.svg(icons[i].name, icons[i].img);
+            this.textures.addBase64(icons[i].name, icons[i].img);
 
             if (icons[i].obj !== undefined) {
-                this.load.image("obj_" + icons[i].name, href + icons[i].obj);
+                // this.load.image("obj_" + icons[i].name, icons[i].obj);
+                this.textures.addBase64("obj_" + icons[i].name, icons[i].obj);
             }
         }
-
-        window.context = this;
     }
 
     async initialize() {

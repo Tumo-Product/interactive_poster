@@ -36,12 +36,11 @@ const onPageLoad = async () => {
     }
 
     $(".front #background p").html(set.intro);
-    $("#poster").attr("src", href + set.background);
+    $("#poster").attr("src", set.background);
 
     game = new Phaser.Game(phaserConfig);
 
     let backgrounds = set.background_end.split("%{div}");
-    console.log(backgrounds);
 
     if (Array.isArray(backgrounds)) {
         let outcomeTexts = parser.getOutcomeTexts(set.outcome);

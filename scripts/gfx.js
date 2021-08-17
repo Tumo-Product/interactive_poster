@@ -115,7 +115,7 @@ const gfx = {
 		$(`#_${i}`).addClass("pulsate");
 	},
 	addFullImage: (image, index) => {
-		$("#background").append(`<img id="f_${index}" src="${href + image}">`);
+		$("#background").append(`<img id="f_${index}" src="${image}">`);
 		$(`#f_${index}`).hide();
 	},
 	toggleFlash: async(color) => {
