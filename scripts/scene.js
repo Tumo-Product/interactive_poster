@@ -236,7 +236,7 @@ class MainScene extends Phaser.Scene {
 const canPlace = (gameObject, index) => {
     let objectsOnCanvas = 0;
     for (let i = 0; i < circles.length; i++) {
-        if (circles[i].onCanvas && circles[i].stickIndex == undefined) {
+        if (circles[i].onCanvas) {
             objectsOnCanvas++;
         }
     }
