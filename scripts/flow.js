@@ -35,7 +35,8 @@ const onPageLoad = async () => {
         }
     }
 
-    $(".front #background p").html(set.intro);
+    console.log(set);
+    $("#intro").html(set.intro);
     $("#poster").attr("src", set.background);
 
     game = new Phaser.Game(phaserConfig);

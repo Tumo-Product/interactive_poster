@@ -25,20 +25,6 @@ body {
     background-color: #F3F3F3;
 }
 
-.back p {
-	overflow: visible;
-	height: 78.81px;
-	width: 459.9px;
-	font-family: FedraDemi;
-	letter-spacing: 0;
-	color: #FFFFFF !important;
-	font-size: 12px !important;
-	line-height: 15px !important;
-	position: absolute;
-	left: 99px;
-	top: 230px;
-}
-
 .flash {
     position: absolute;
     width: 100%;
@@ -200,6 +186,9 @@ body {
     text-align: center;
     color: #596B80;
     width: 600px;
+}
+
+#intro {
     z-index: 10;
 
     width: 569px;
@@ -209,6 +198,20 @@ body {
     padding-top: 25px;
     padding-bottom: 25px;
     box-shadow: 5px 5px 2px 0 rgb(222 222 230 / 50%), -3px -3px 2px 0 #fefefe;
+}
+
+.back p {
+	overflow: visible;
+	height: 78.81px;
+	width: 465px !important;
+	font-family: FedraDemi;
+	letter-spacing: 0;
+	color: #FFFFFF !important;
+	font-size: 12px !important;
+	line-height: 15px !important;
+	position: absolute;
+	left: 99px;
+	top: 230px;
 }
 
 #icons {
