@@ -35,11 +35,13 @@ const gfx = {
 
 			if (gfx.buttonsShown[buttons[i]]) {
 				$(`#${buttons[i]}`).show();
+				$(`#${buttons[i]}`).css("pointer-events", "all");
 				await timeout(10);
 				$(`#${buttons[i]}`).css("opacity", 1);
 			}
 			else {
 				$(`#${buttons[i]}`).css("opacity", 0);
+				$(`#${buttons[i]}`).css("pointer-events", "none");
 				await timeout(500);
 				$(`#${buttons[i]}`).hide();
 			}
@@ -64,6 +66,13 @@ const gfx = {
 			gfx.toggleButton("left");
 			gfx.toggleButton("right");
 		}
+
+		var btn = $(".scrollBtn");
+		btn.css("pointer-events", "none");
+
+		window.setTimeout(function(){ 
+			btn.css("pointer-events", "all");
+		}, 600);
 	},
 	onPlay: async () => {
 		$("#icons").addClass("grow");
