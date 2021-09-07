@@ -39,13 +39,13 @@
 }
 
 .shrink {
-    transition: 1s;
+    transition: 0.5s;
     top: 275px !important;
     height: 0px !important;
 }
 
 .center {
-    transition: 1s;
+    transition: 0.5s;
     left: 112.5px !important;
 }
 

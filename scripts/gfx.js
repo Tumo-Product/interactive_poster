@@ -132,9 +132,9 @@ const gfx = {
 		$("#icons").addClass("shrink");
 		$("#iconsOverlay").addClass("shrink");
 
-		await timeout(1000);
+		await timeout(600);
 		$(".front #background").addClass("center");	
-		await timeout(3000);
+		await timeout(1500);
 
 		$(".front").addClass("frontFlip");
 		$(".back").addClass("backFlip");

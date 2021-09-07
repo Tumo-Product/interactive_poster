@@ -35,7 +35,6 @@ const onPageLoad = async () => {
         }
     }
 
-    console.log(set);
     $("#intro").html(set.intro);
     $("#poster").attr("src", set.background);
 

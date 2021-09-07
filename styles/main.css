@@ -374,13 +374,13 @@ canvas {
 .front {
 	transform: perspective(900px) rotateY(0deg);
     transition-timing-function: ease-in-out;
-    transition: 2s;
+    transition: 1s;
 	z-index: 2;
 }
 
 .back {
 	transform: perspective(900px) rotateY(180deg);
     transition-timing-function:ease-in-out;
-    transition: 2s;
+    transition: 1s;
 	z-index: 1;
 }
