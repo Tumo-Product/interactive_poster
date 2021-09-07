@@ -188,15 +188,27 @@ body {
 }
 
 #poster {
-    opacity: 0;
+    opacity: 0.2;
+    filter: blur(2px);
 }
 
 #background p {
+    transition: 0.4s;
     font-size: 20px;
     font-weight: 500;
     line-height: 25px;
     text-align: center;
     color: #596B80;
+    width: 600px;
+    z-index: 10;
+
+    width: 569px;
+    background: #f3f3f3;
+    border-radius: 15px;
+    padding: 15px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    box-shadow: 5px 5px 2px 0 rgb(222 222 230 / 50%), -3px -3px 2px 0 #fefefe;
 }
 
 #icons {

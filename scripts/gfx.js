@@ -68,8 +68,11 @@ const gfx = {
 	onPlay: async () => {
 		$("#icons").addClass("grow");
 		$("#iconsOverlay").addClass("grow");
+		$(".front #background p").css("opacity", 0);
+		await timeout(400);
 		$(".front #background p").remove();
-		$(".front #background img").css("opacity", 1);
+		$("#poster").css("opacity", 1);
+		$("#poster").css("filter", "none");
 		await timeout(500);
 		$("#play").addClass("offscreen");
 		await timeout(1000);
