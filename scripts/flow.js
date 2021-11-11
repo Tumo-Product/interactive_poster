@@ -23,6 +23,7 @@ const timeout = (ms) => {
 const onPageLoad = async () => {
     let data = await parser.dataFetch();
     let set = data.data.data;
+    console.log(set);
 
     bgPath = set.background;
 

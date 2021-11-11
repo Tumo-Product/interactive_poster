@@ -75,6 +75,10 @@ const gfx = {
 		}, 600);
 	},
 	onPlay: async () => {
+		$("#msg").click(function() {
+			$(`#msg`).addClass(`hidden`);
+		});
+
 		$("#icons").addClass("grow");
 		$("#iconsOverlay").addClass("grow");
 		$(".front #background p").css("opacity", 0);
@@ -135,7 +139,14 @@ const gfx = {
 		await timeout(500);
 		$(`#${color}`).css("opacity", 0);
 	},
+	popup: async(message) => {
+		$(`#msg`).removeClass(`hidden`);
+		$(`#msg p`).text(message);
+		await timeout(10000);
+		$(`#msg`).addClass(`hidden`);
+	},
 	end: async() => {
+		$(`#msg`).addClass(`hidden`);
 		$("#canvas").attr("style", "opacity: 0 !important");
 		await timeout(1000);
 		$("#icons").addClass("shrink");

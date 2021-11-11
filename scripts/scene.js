@@ -58,7 +58,8 @@ class MainScene extends Phaser.Scene {
             this.input.dragDistanceThreshold = 5;
 
             if (icon.stick !== undefined) {
-                stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y, occupied: false };
+                stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y, occupied: false, 
+                wrong: icon.stick.wrongMsg, correct: icon.stick.correctMsg };
                 circles[i].stickIndex = i;
                 stickCount++;
             }
@@ -171,13 +172,15 @@ class MainScene extends Phaser.Scene {
 
                     $(`#_${stickIndex}`).hide();
                     gameObject.visible = false;
-
                     $(`#f_${stickIndex}`).show();
                     gfx.toggleFlash("green");
+                    gfx.popup(stickPositions[stickIndex].correct)
 
                     gfx.disableIcon(gfx.icons[index]);
                 } else {
                     gfx.toggleFlash("red");
+                    gfx.popup(stickPositions[stickIndex].wrong)
+
                     gameObject.alpha = 0.001;
                     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
                     obj.setScale(0.25);

@@ -13,6 +13,11 @@
     src: url('../fonts/FedraSansAltPro/FedraSansAltPro-Demi.otf');
 }
 
+@font-face {
+    font-family: FedraBold;
+    src: url('../fonts/FedraSansAltPro/FedraSansAltPro-Bold.otf');
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -383,4 +388,38 @@ canvas {
     transition-timing-function:ease-in-out;
     transition: 1s;
 	z-index: 1;
+}
+
+#msg {
+    position: absolute;
+    z-index: 10;
+    margin-left: 248px;
+    bottom: 15px;
+    height: 125px;
+    width: 564px;
+    border-radius: 19px;
+    box-shadow: 1px 3px 4px 1px rgba(222,222,230,0.5), -1px -1px 2px 0 #FEFEFE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #F3F3F3;
+    transition: .7s;
+    cursor: pointer;
+}
+
+#msg p {
+    width: 488px;
+    height: 96px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: FedraBold;
+    color: #43698C;
+    font-size: 13px;
+    line-height: 16px;
+}
+
+.hidden {
+    margin-bottom: -150px;
 }
