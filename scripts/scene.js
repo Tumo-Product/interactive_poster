@@ -174,12 +174,18 @@ class MainScene extends Phaser.Scene {
                     gameObject.visible = false;
                     $(`#f_${stickIndex}`).show();
                     gfx.toggleFlash("green");
-                    gfx.popup(stickPositions[stickIndex].correct)
 
+                    if (stickPositions[stickIndex].correct !== undefined && stickPositions[stickIndex].correct !== '') {
+                         gfx.popup(stickPositions[stickIndex].correct);
+                    }
+                    
                     gfx.disableIcon(gfx.icons[index]);
                 } else {
                     gfx.toggleFlash("red");
-                    gfx.popup(stickPositions[stickIndex].wrong)
+
+                    if (stickPositions[stickIndex].wrong !== undefined && stickPositions[stickIndex].wrong !== '') {
+                        gfx.popup(stickPositions[stickIndex].wrong);
+                    }
 
                     gameObject.alpha = 0.001;
                     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
