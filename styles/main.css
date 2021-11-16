@@ -390,36 +390,83 @@ canvas {
 	z-index: 1;
 }
 
-#msg {
+#popup {
+    opacity: 0;
     position: absolute;
     z-index: 10;
-    margin-left: 248px;
-    bottom: 15px;
-    height: 125px;
-    width: 564px;
-    border-radius: 19px;
-    box-shadow: 1px 3px 4px 1px rgba(222,222,230,0.5), -1px -1px 2px 0 #FEFEFE;
+    bottom: 77px;
+    right: 42px;
+    height: 50px;
+    width: 51px;
+    border-radius: 8px 0 0 8px;
     display: flex;
     justify-content: center;
     align-items: center;
     background: #F3F3F3;
     transition: 0.7s;
-    cursor: pointer;
 }
 
-#msg p {
-    width: 488px;
-    height: 96px;
-    text-align: center;
+#popup p {
+    position: absolute;
+    top: 20px;
+    width: 156px;
+    height: 211px;
+    text-align: left;
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: FedraBold;
     color: #43698C;
-    font-size: 13px;
+    font-size: 11px;
     line-height: 16px;
+    opacity: 0;
+    transition: 0.2s;
 }
 
-.hidden {
-    margin-bottom: -150px;
+#popupBtn {
+    transition: 0.5s;
+    border-radius: 5px;
+    position: absolute;
+    bottom: 6px;
+    right: 6px;
+    width: 38px;
+    height: 38px;
+    background-color: #F3F3F3;
+    box-shadow: -1px -1px 1px 0 rgba(222,222,230,0.5), 1px 1px 1px 0 #FEFEFE;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#popupBtn img {
+    position: absolute;
+    transition: 0.3s;
+    height: 50%;
+}
+
+#minus {
+    height: 17% !important;
+    opacity: 0;
+}
+
+.disabledPopupBtn {
+    pointer-events: none;
+    cursor: initial !important;
+}
+
+.disabledPopupBtn img {
+    filter: grayscale(1);
+    opacity: 0.5;
+}
+
+.opened {
+    height: 261px !important;
+    width: 182px !important;
+    border-radius: 19px 0 0 19px !important;
+}
+
+.opened #popupBtn {
+    width: 22px !important;
+    height: 22px !important;
 }

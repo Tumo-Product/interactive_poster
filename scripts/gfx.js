@@ -9,6 +9,7 @@ const gfx = {
 	outcomeWidth: 657,
 	buttonsShown: { left: false, right: false },
 	currentOutcome: 0,
+	popupOpen: false,
 
 	toggleLoadingScreen: () => {
 		if (gfx.loaderOpen) {
@@ -75,8 +76,8 @@ const gfx = {
 		}, 600);
 	},
 	onPlay: async () => {
-		$("#msg").click(function() {
-			$(`#msg`).addClass(`hidden`);
+		$("#popupBtn").click(function() {
+			gfx.togglePopup();
 		});
 
 		$("#icons").addClass("grow");
@@ -140,13 +141,47 @@ const gfx = {
 		$(`#${color}`).css("opacity", 0);
 	},
 	popup: async(message) => {
-		$(`#msg`).removeClass(`hidden`);
-		$(`#msg p`).text(message);
-		await timeout(10000);
-		$(`#msg`).addClass(`hidden`);
+		gfx.popupOpen = true;
+		$(`#popup`).addClass(`opened`);
+		$(`#popup p`).html(message);
+		$("#lightning").css("opacity", 0);
+		await timeout(300);
+		$("#popup p").css("opacity", 1);
+		$("#minus").css("opacity", 1);
+	},
+	togglePopup: async () => {
+		gfx.popupOpen = !gfx.popupOpen;
+		$("#popup").css("pointer-events", "none");
+
+		if (gfx.popupOpen) {
+			$(`#popup`).addClass(`opened`);
+			$("#lightning").css("opacity", 0);
+			await timeout(300);
+			$("#popup p").css("opacity", 1);
+			$("#minus").css("opacity", 1);
+		} else {
+			$("#popup p").css("opacity", 0);
+			$(`#popup`).removeClass(`opened`);
+			$("#minus").css("opacity", 0);
+			await timeout(300);
+			$("#lightning").css("opacity", 1);
+		}
+
+		setTimeout(() => {
+			$("#popup").css("pointer-events", "all");			
+		}, 500);
+	},
+	closePopup : async () => {
+		$("#popup p").css("opacity", 0);
+		$(`#popup`).removeClass(`opened`);
+		$("#popup").css("opacity", 0);
+	},
+	enablePopupBtn: async () => {
+		$("#popupBtn").removeClass("disabledPopupBtn");
 	},
 	end: async() => {
-		$(`#msg`).addClass(`hidden`);
+		gfx.closePopup();
+		$(`#popup`).addClass(`hidden`);
 		$("#canvas").attr("style", "opacity: 0 !important");
 		await timeout(1000);
 		$("#icons").addClass("shrink");

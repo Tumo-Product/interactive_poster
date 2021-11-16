@@ -2,8 +2,8 @@ let icons = [];
 let context;
 let game;
 let positions = [];
-let popupDone = false;
 let outcomeLength = 1;
+let popupOpen = false;
 
 let phaserConfig = {
     type: Phaser.AUTO,
@@ -23,7 +23,6 @@ const timeout = (ms) => {
 const onPageLoad = async () => {
     let data = await parser.dataFetch();
     let set = data.data.data;
-    console.log(set);
 
     bgPath = set.background;
 
@@ -71,7 +70,6 @@ const onPlay = async () => {
 
     window.context.initialize();
     await timeout (1000);
-    popupDone = true;
 }
 
 const updatePositions = () => {
@@ -85,6 +83,9 @@ const updatePositions = () => {
 const addPulses = async () => {
     for (let i = 0; i < icons.length; i++) {
         if (icons[i].stick === undefined) continue;
+        if (icons[i].stick.correctMsg !== undefined || icons[i].stick.wrongMsg !== undefined) {
+            $("#popup").css("opacity", 1);
+        }
 
         await timeout((Math.floor(Math.random() * 1000) + 1));
         gfx.addPulse(icons[i].stick.x + 5, icons[i].stick.y + 5, i);

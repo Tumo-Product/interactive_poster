@@ -175,16 +175,20 @@ class MainScene extends Phaser.Scene {
                     $(`#f_${stickIndex}`).show();
                     gfx.toggleFlash("green");
 
-                    if (stickPositions[stickIndex].correct !== undefined && stickPositions[stickIndex].correct !== '') {
-                         gfx.popup(stickPositions[stickIndex].correct);
+                    let msg = stickPositions[stickIndex].correct;
+                    if (msg !== undefined && msg !== '') {
+                        gfx.popup(msg);
+                        gfx.enablePopupBtn();
                     }
                     
                     gfx.disableIcon(gfx.icons[index]);
                 } else {
                     gfx.toggleFlash("red");
 
-                    if (stickPositions[stickIndex].wrong !== undefined && stickPositions[stickIndex].wrong !== '') {
-                        gfx.popup(stickPositions[stickIndex].wrong);
+                    let msg = stickPositions[stickIndex].wrong;
+                    if (msg !== undefined && msg !== '') {
+                        gfx.popup(msg);
+                        gfx.enablePopupBtn();
                     }
 
                     gameObject.alpha = 0.001;
