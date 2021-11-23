@@ -49,6 +49,11 @@
     left: 112.5px !important;
 }
 
+.centerPopup {
+    /* 79.5 */
+    right: 121.5px !important;
+}
+
 .removeIconOpacity {
     opacity: 0;
 }
@@ -71,4 +76,32 @@
 .showButton {
     display: block !important;
     opacity: 1 !important;
+}
+
+.pulsingImage {
+    filter: drop-shadow(2px 2px 2px white) drop-shadow(-1px -1px 0px rgb(255, 255, 180));
+    animation: upDown 1.8s linear infinite;
+}
+
+@keyframes upDown {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.25);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.imageHover {
+    filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.7)) drop-shadow(-1px -1px 0px rgba(255, 255, 123, 0.7)) !important;
+    animation: none !important;
+}
+
+.imageDown {
+    filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.4)) drop-shadow(-1px -1px 0px rgba(255, 255, 123, 0.4)) !important;
 }

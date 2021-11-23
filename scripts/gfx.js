@@ -9,7 +9,7 @@ const gfx = {
 	outcomeWidth: 657,
 	buttonsShown: { left: false, right: false },
 	currentOutcome: 0,
-	popupOpen: false,
+	playing: false,
 
 	toggleLoadingScreen: () => {
 		if (gfx.loaderOpen) {
@@ -76,10 +76,6 @@ const gfx = {
 		}, 600);
 	},
 	onPlay: async () => {
-		$("#popupBtn").click(function() {
-			gfx.togglePopup();
-		});
-
 		$("#icons").addClass("grow");
 		$("#iconsOverlay").addClass("grow");
 		$(".front #background p").css("opacity", 0);
@@ -126,13 +122,16 @@ const gfx = {
 		$(`#_${i}`).css("left", x);
 		$(`#_${i}`).css("top", y);
 
+		// Change image pivots to this point.
+		$(`#f_${i}`).css("transform-origin", `${x}px ${y}px`);
+
 		$(`#_${i}`).addClass("appear");
 		await timeout(1000);
 		$(`#_${i}`).removeClass("appear");
 		$(`#_${i}`).addClass("pulsate");
 	},
 	addFullImage: (image, index) => {
-		$("#background").append(`<img id="f_${index}" src="${image}">`);
+		$("#background").append(`<img class="fullImage" id="f_${index}" src="${image}">`);
 		$(`#f_${index}`).hide();
 	},
 	toggleFlash: async(color) => {
@@ -140,55 +139,37 @@ const gfx = {
 		await timeout(500);
 		$(`#${color}`).css("opacity", 0);
 	},
-	popup: async(message) => {
-		gfx.popupOpen = true;
-		$(`#popup`).addClass(`opened`);
-		$(`#popup p`).html(message);
-		$("#lightning").css("opacity", 0);
-		await timeout(300);
-		$("#popup p").css("opacity", 1);
-		$("#minus").css("opacity", 1);
+	popup: async() => {
+		gfx.playing = true;
+		$("#audioPlay").css("opacity", 0);
+		$("#audioPause").css("opacity", 1);
 	},
-	togglePopup: async () => {
-		gfx.popupOpen = !gfx.popupOpen;
-		$("#popup").css("pointer-events", "none");
-
-		if (gfx.popupOpen) {
-			$(`#popup`).addClass(`opened`);
-			$("#lightning").css("opacity", 0);
-			await timeout(300);
-			$("#popup p").css("opacity", 1);
-			$("#minus").css("opacity", 1);
-		} else {
-			$("#popup p").css("opacity", 0);
-			$(`#popup`).removeClass(`opened`);
-			$("#minus").css("opacity", 0);
-			await timeout(300);
-			$("#lightning").css("opacity", 1);
-		}
-
-		setTimeout(() => {
-			$("#popup").css("pointer-events", "all");			
-		}, 500);
+	enablePlayBtn: async () => {
+		$("#audioPause").css("opacity", 0);
+		$("#audioPlay").css("opacity", 1);
 	},
-	closePopup : async () => {
-		$("#popup p").css("opacity", 0);
-		$(`#popup`).removeClass(`opened`);
-		$("#popup").css("opacity", 0);
+	enablePauseBtn: async () => {
+		$("#audioPlay").css("opacity", 0);
+		$("#audioPause").css("opacity", 1);
 	},
 	enablePopupBtn: async () => {
 		$("#popupBtn").removeClass("disabledPopupBtn");
 	},
 	end: async() => {
-		gfx.closePopup();
-		$(`#popup`).addClass(`hidden`);
 		$("#canvas").attr("style", "opacity: 0 !important");
 		await timeout(1000);
 		$("#icons").addClass("shrink");
 		$("#iconsOverlay").addClass("shrink");
 
 		await timeout(600);
-		$(".front #background").addClass("center");	
+		$("#popup").addClass("centerPopup");
+		$(".front #background").addClass("center");
+
+		if (popupEnabled) {
+			$("#backgrund").css("z-index", 1);
+			$(".back").remove();
+			return;
+		}
 		await timeout(1500);
 
 		$(".front").addClass("frontFlip");

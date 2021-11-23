@@ -60,6 +60,7 @@ class MainScene extends Phaser.Scene {
             if (icon.stick !== undefined) {
                 stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y, occupied: false, 
                 wrong: icon.stick.wrongMsg, correct: icon.stick.correctMsg };
+
                 circles[i].stickIndex = i;
                 stickCount++;
             }
@@ -67,9 +68,6 @@ class MainScene extends Phaser.Scene {
             if (icon.full !== undefined) circles[i].full = icon.full;
             circles[i].obj = "obj_" + icon.name;
             circles[i].stuckIn = -1;
-
-            objects[i] = this.add.image(0, 0, circles[i].obj);
-            objects[i].visible = false;
         }
 
         this.shuffle(circles);
@@ -171,28 +169,21 @@ class MainScene extends Phaser.Scene {
                     lockedIndex++;
 
                     $(`#_${stickIndex}`).hide();
-                    gameObject.visible = false;
                     $(`#f_${stickIndex}`).show();
                     gfx.toggleFlash("green");
+                    playNewAudio(stickIndex, "correct");
 
-                    let msg = stickPositions[stickIndex].correct;
-                    if (msg !== undefined && msg !== '') {
-                        gfx.popup(msg);
-                        gfx.enablePopupBtn();
-                    }
+                    gameObject.visible = false;
+                    handleCorrectObject(gameObject);
                     
                     gfx.disableIcon(gfx.icons[index]);
                 } else {
                     gfx.toggleFlash("red");
-
-                    let msg = stickPositions[stickIndex].wrong;
-                    if (msg !== undefined && msg !== '') {
-                        gfx.popup(msg);
-                        gfx.enablePopupBtn();
-                    }
+                    playNewAudio(stickIndex, "wrong");
 
                     gameObject.alpha = 0.001;
                     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
+
                     obj.setScale(0.25);
                     gameObject.objImage = obj;
                 }
@@ -223,7 +214,8 @@ class MainScene extends Phaser.Scene {
         }
 
         if (lockedIndex == stickCount) {
-            gfx.end();
+            handle = true;
+            await end();
         }
     }
 
@@ -244,6 +236,88 @@ class MainScene extends Phaser.Scene {
         this.scr = $("#parent").scrollTop() + deltaY;
         $("#parent").scrollTop(this.scr);
     }
+}
+
+const handleCorrectObject = async (gameObject) => {
+    let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
+    
+    obj.stickIndex = gameObject.stickIndex;
+    obj.alpha = 0.001;
+    obj.setScale(0.25);
+    objects.push(obj);
+}
+
+const handleEvents = async () => {
+    togglePlay(outcomeAudio);
+
+    $("#popupBtn").click(function() {
+        audioElem.pause();
+        $(".imageHover").removeClass("imageHover");
+        togglePlay(outcomeAudio);
+    });
+
+    audioElem.removeEventListener("ended", handleAudioEvent);
+    audioElem.addEventListener("ended", function() {
+        $(".imageHover").removeClass("imageHover");
+        $(".imageDown").removeClass("imageDown");
+        audioIndex = -1;
+    });
+
+    handled = true;
+}
+
+const enableIcons = async () => {
+    for (let obj of objects) {
+        obj.x -= 79;
+        obj.setInteractive({ cursor: 'pointer' });
+        let index = obj.stickIndex;
+        
+        $(`#f_${index}`).addClass("pulsingImage");
+
+        obj.on("pointerover", function(event) {
+            $(`#f_${index}`).addClass("imageHover");
+        });
+
+        obj.on("pointerout", function(event) {
+            if (this.stickIndex !== audioIndex) {
+                $(`#f_${index}`).removeClass("imageHover");
+            }
+        });
+
+        obj.on("pointerdown", function(event) {
+            if (this.stickIndex !== audioIndex) {
+                $(`#f_${index}`).addClass("imageHover");
+                $(`#f_${index}`).addClass("imageDown");
+            }
+        });
+
+        obj.on("pointerup", function(event) {
+            if (playing) togglePlay(outcomeAudio);
+
+            if (this.stickIndex === audioIndex && audioIndex !== -1) {
+                if (!audioElem.paused) {
+                    $(`#f_${index}`).removeClass("imageHover");
+                    audioElem.pause();
+                } else {
+                    $(`#f_${index}`).addClass("imageHover");
+                    audioElem.play();
+                }
+                
+                return;
+            }
+
+            $(`#f_${index}`).removeClass("imageDown");
+
+            playNewAudio(index, "correct", true);
+            audioIndex = index;
+        });
+    }
+}
+
+const msg = async () => {
+    $("#msg").addClass("active");
+    await timeout(5000);
+    $("#msg").removeClass("active");
 }
 
 const canPlace = (gameObject, index) => {

@@ -160,11 +160,15 @@ body {
 
 #background img, #outcome {
     position: absolute;
+    transition: 0.1s;
     border-radius: 15px;
     pointer-events: none;
-    transition: 2s;
     width: 657px;
     height: 433px;
+}
+
+#background #poster {
+    transition: 2s;
 }
 
 #outcome {
@@ -350,7 +354,7 @@ canvas {
     right: 42px;
     top: 50px;
     bottom: 49px;
-    transition: 1s;
+    transition: 0.5s;
 }
 
 #items {
@@ -403,7 +407,7 @@ canvas {
     justify-content: center;
     align-items: center;
     background: #F3F3F3;
-    transition: 0.7s;
+    transition: 0.5s;
 }
 
 #popup p {
@@ -441,12 +445,12 @@ canvas {
 
 #popupBtn img {
     position: absolute;
-    transition: 0.3s;
+    transition: 0.1s;
     height: 50%;
 }
 
-#minus {
-    height: 17% !important;
+#audioPause {
+    height: 45% !important;
     opacity: 0;
 }
 
@@ -460,13 +464,38 @@ canvas {
     opacity: 0.5;
 }
 
-.opened {
-    height: 261px !important;
-    width: 182px !important;
-    border-radius: 19px 0 0 19px !important;
+#msg {
+    position: absolute;
+    top: 0;
+    left: 224px;
+    z-index: 10;
+    transition: 0.5s;
+    cursor: pointer;
+
+    height: 91px;
+    width: 452px;
+    border-radius: 19px;
+    background-color: #F3F3F3;
+    box-shadow: 1px 1px 1px 0 rgba(222,222,230,0.5), -1px -1px 1px 0 #FEFEFE;
+    margin-top: -100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.opened #popupBtn {
-    width: 22px !important;
-    height: 22px !important;
+#msg p {
+    font-family: FedraBold;
+    font-size: 11px;
+    line-height: 16px;
+    color: #43698C;
+    width: 414px;
+    height: 64px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active {
+    margin-top: 78px !important;
 }
