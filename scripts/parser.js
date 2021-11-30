@@ -13,7 +13,6 @@ const parser = {
     },
 	getFile : async (path) => {
 		axios.defaults.baseURL = "https://content-tools.tumo.world:4000";
-		// video/getfile
 		let data = await axios.post("video/getfile", {path: path});
 		let baseData = data.data.data;
 		return baseData;

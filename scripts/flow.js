@@ -147,6 +147,12 @@ const playNewAudio = async (index, type, individual) => {
     });
 }
 
+const playSfx = async (type) => {
+    document.getElementById("sfxAudio").src = "sfx/" + type + ".wav";
+    document.getElementById("sfxAudio").curretnTime = 0;
+    document.getElementById("sfxAudio").play();
+}
+
 const end = async () => {
     await gfx.end(popupEnabled);
     $("#popupBtn").unbind("click");

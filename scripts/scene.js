@@ -172,6 +172,7 @@ class MainScene extends Phaser.Scene {
                     $(`#f_${stickIndex}`).show();
                     gfx.toggleFlash("green");
                     playNewAudio(stickIndex, "correct");
+                    playSfx("correct");
 
                     gameObject.visible = false;
                     handleCorrectObject(gameObject);
@@ -180,6 +181,7 @@ class MainScene extends Phaser.Scene {
                 } else {
                     gfx.toggleFlash("red");
                     playNewAudio(stickIndex, "wrong");
+                    playSfx("wrong");
 
                     gameObject.alpha = 0.001;
                     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
