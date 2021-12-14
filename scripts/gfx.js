@@ -167,10 +167,17 @@ const gfx = {
 		$(".front #background").addClass("center");
 		
 		if (popupEnabled) {
-			enableIcons();
-			msg();
 			$("#backgrund").css("z-index", 1);
 			$(".back").remove();
+
+			for (let obj of objects) {
+				animateX(obj, 79, 500);
+			}
+			
+			setTimeout(() => {
+				enableIcons();
+				msg(set.popupText);
+			}, 3000);
 			return;
 		}
 		await timeout(1500);

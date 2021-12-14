@@ -278,17 +278,23 @@ const handleCorrectObject = async (gameObject) => {
 
 const handleEvents = async () => {
     togglePlay(outcomeAudio);
+    gfx.enablePlayBtn();
+    $("#popupBtn").unbind("click");
 
     $("#popupBtn").click(function() {
         audioElem.pause();
-        $(".imageHover").removeClass("imageHover");
+        $(`.pulsingImage`).removeClass("pulsingImage");
         togglePlay(outcomeAudio);
+
+        for (let obj of objects) {
+            stopAnimation(obj.index);
+        }
     });
 
     audioElem.removeEventListener("ended", handleAudioEvent);
     audioElem.addEventListener("ended", function() {
-        $(".imageHover").removeClass("imageHover");
-        $(".imageDown").removeClass("imageDown");
+        $(`.pulsingImage`).removeClass("pulsingImage");
+        stopAnimation(audioIndex);
         audioIndex = -1;
     });
 
@@ -297,14 +303,10 @@ const handleEvents = async () => {
 
 const enableIcons = async () => {
     for (let obj of objects) {
-        animateX(obj, 79, 500);
         obj.setInteractive({ cursor: 'pointer' });
         let index = set.objectBased ? obj.myIndex : obj.stickIndex;
         obj.index = index;
-        startAnimation(index, objScale);
         
-        $(`#f_${index}`).addClass("pulsingImage");
-
         obj.on("pointerover", function(event) {
             $(`#f_${index}`).addClass("imageHover");
             stopAnimation(index);
@@ -315,6 +317,7 @@ const enableIcons = async () => {
         obj.on("pointerout", function(event) {
             if (this.index !== audioIndex) {
                 $(`#f_${this.index}`).removeClass("imageHover");
+            } else {
                 startAnimation(this.index, objScale);
             }
             
@@ -333,28 +336,32 @@ const enableIcons = async () => {
         obj.on("pointerup", function(event) {
             if (playing) togglePlay(outcomeAudio);
             let lastIndex = audioIndex;
+            $(`#f_${this.index}`).removeClass("imageDown");
 
             if (this.index === audioIndex && audioIndex !== -1) {
                 if (!audioElem.paused) {
-                    $(`#f_${this.index}`).removeClass("imageHover");
-                    startAnimation(this.index, objScale);
+                    $(`#f_${this.index}`).removeClass("pulsingImage");
+                    stopAnimation(this.index);
                     audioElem.pause();
                     audioIndex = -1;
                 } else {
-                    $(`#f_${this.index}`).addClass("imageHover");
+                    $(`#f_${this.index}`).addClass("pulsingImage");
                     audioElem.play();
-                    stopAnimation(this.index);
+                    startAnimation(this.index, objScale);
                     audioIndex = this.index;
                 }
             } else {
-                $(`#f_${this.index}`).removeClass("imageDown");
+                $(`#f_${this.index}`).addClass("pulsingImage");
                 this.alpha = 1;
                 
                 playNewAudio(this.index, "correct", true);
                 audioIndex = this.index;
             }
 
-            if (lastIndex !== -1) startAnimation(lastIndex, objScale);
+            if (lastIndex !== -1) {
+                $(`#f_${lastIndex}`).removeClass("pulsingImage");
+                stopAnimation(lastIndex);
+            }
         });
     }
 }
@@ -396,10 +403,16 @@ const startAnimation = async(index, scale) => {
 }
 
 const stopAnimation = async (index) => {
+    let obj;
+    for (let object of objects) {
+        if (object.index === index) obj = object;
+    }
+    obj.scale = objScale;
     clearInterval(intervals[index]);
 }
 
-const msg = async () => {
+const msg = async (text) => {
+    $("#msg p").html(text);
     $("#msg").addClass("active");
     await timeout(5000);
     $("#msg").removeClass("active");

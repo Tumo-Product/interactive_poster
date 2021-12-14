@@ -87,9 +87,6 @@ const onPageLoad = async () => {
 
 const handleAudioEvent = async () => {
     togglePlay(audioElem);
-    if (handle && !handled) {
-        handleEvents();
-    }
 }
 
 const getAudioData = async () => {
@@ -148,8 +145,10 @@ const playSfx = async (type) => {
 }
 
 const end = async () => {
+    if (handle && !handled) {
+        handleEvents();
+    }
     await gfx.end(popupEnabled);
-    $("#popupBtn").unbind("click");
 }
 
 const onPlay = async () => {
