@@ -14,16 +14,18 @@ let popupEnabled = false;
 let handled = false;
 let handle = false;
 let outcomeShown = false;
+let divisions = -1;
 
 let phaserConfig = {
     type: Phaser.AUTO,
-    parent: 'canvas',
+    mipmapFilter: "LINEAR_MIPMAP_LINEAR",
     scale: {
+        parent: 'canvas',
         width: width,
         height: height
     },
     scene: MainScene,
-    transparent: true
+    transparent: true,
 };
 
 const timeout = (ms) => {
@@ -33,8 +35,8 @@ const timeout = (ms) => {
 const onPageLoad = async () => {
     let data = await parser.dataFetch();
     set = data.data.data;
-
     bgPath = set.background;
+    if (set.divisions !== undefined) divisions = set.divisions;
 
     for (let i = 0; i < set.icons.length; i++) {
         let icon = set.icons[i];
@@ -64,7 +66,7 @@ const onPageLoad = async () => {
         gfx.addOutcome(0, backgrounds);
     }
 
-    await getAudioData();
+    // await getAudioData();
     $("#msg").click(function() { $(this).removeClass("active"); });
 
     audioElem = document.getElementById("audio");
@@ -76,8 +78,6 @@ const onPageLoad = async () => {
         togglePlay(outcomeAudio);
         if (!outcomeShown) {
             outcomeShown = true;
-            msg();
-            enableIcons();
         }
     });
 
@@ -139,12 +139,6 @@ const playNewAudio = async (index, type, individual) => {
         playing = true;
     }
     audioElem.play();
-    
-    $(".fullImage").each(function (i) {
-        if (i != index) {
-            $(this).removeClass("imageHover");
-        }
-    });
 }
 
 const playSfx = async (type) => {
@@ -167,7 +161,6 @@ const onPlay = async () => {
     gfx.toggleCanvas();
     await gfx.onPlay();
 
-    addPulses();
     gfx.addIcons();
     updatePositions();
 
@@ -192,9 +185,13 @@ const addPulses = async () => {
             $("#popup").css("opacity", 1);
         }
 
-        await timeout((Math.floor(Math.random() * 1000) + 1));
         gfx.addPulse(icons[i].stick.x + 5, icons[i].stick.y + 5, i);
     }
+
+    for (let i = 0; i < icons.length; i++) {
+		await gfx.activatePulse(i);
+    }
+    
 }
 
 $(onPageLoad());

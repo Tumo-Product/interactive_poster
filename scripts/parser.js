@@ -11,10 +11,4 @@ const parser = {
 
         return splitText;
     },
-	getFile : async (path) => {
-		axios.defaults.baseURL = "https://content-tools.tumo.world:4000";
-		let data = await axios.post("video/getfile", {path: path});
-		let baseData = data.data.data;
-		return baseData;
-	}
 }

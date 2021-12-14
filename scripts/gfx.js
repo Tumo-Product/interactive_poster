@@ -124,11 +124,12 @@ const gfx = {
 
 		// Change image pivots to this point.
 		$(`#f_${i}`).css("transform-origin", `${x}px ${y}px`);
-
+	},
+	activatePulse: async (i) => {
 		$(`#_${i}`).addClass("appear");
-		await timeout(1000);
-		$(`#_${i}`).removeClass("appear");
-		$(`#_${i}`).addClass("pulsate");
+        await timeout((Math.floor(Math.random() * 1000) + 1));
+        $(`#_${i}`).removeClass("appear");
+        $(`#_${i}`).addClass("pulsate");
 	},
 	addFullImage: (image, index) => {
 		$("#background").append(`<img class="fullImage" id="f_${index}" src="${image}">`);
@@ -156,7 +157,7 @@ const gfx = {
 		$("#popupBtn").removeClass("disabledPopupBtn");
 	},
 	end: async() => {
-		$("#canvas").attr("style", "opacity: 0 !important");
+		// $("#canvas").attr("style", "opacity: 0 !important");
 		await timeout(1000);
 		$("#icons").addClass("shrink");
 		$("#iconsOverlay").addClass("shrink");
@@ -164,8 +165,10 @@ const gfx = {
 		await timeout(600);
 		$("#popup").addClass("centerPopup");
 		$(".front #background").addClass("center");
-
+		
 		if (popupEnabled) {
+			enableIcons();
+			msg();
 			$("#backgrund").css("z-index", 1);
 			$(".back").remove();
 			return;

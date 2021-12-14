@@ -79,7 +79,7 @@
 }
 
 .pulsingImage {
-    filter: drop-shadow(2px 2px 2px white) drop-shadow(-1px -1px 0px rgb(255, 255, 180));
+    /* filter: drop-shadow(2px 2px 2px white) drop-shadow(-1px -1px 0px rgb(255, 255, 180)); */
     animation: upDown 1.8s linear infinite;
 }
 
@@ -98,10 +98,12 @@
 }
 
 .imageHover {
-    filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.7)) drop-shadow(-1px -1px 0px rgba(255, 255, 123, 0.7)) !important;
+    opacity: 0.7 !important;
+    /* filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.7)) drop-shadow(-1px -1px 0px rgba(255, 255, 123, 0.7)) !important; */
     animation: none !important;
 }
 
 .imageDown {
+    opacity: 0.5 !important;
     filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.4)) drop-shadow(-1px -1px 0px rgba(255, 255, 123, 0.4)) !important;
 }

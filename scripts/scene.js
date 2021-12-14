@@ -5,6 +5,7 @@ let startingPositions = [];
 let stickPositions = [];
 let circles = [];
 let distances = [];
+let intervals = [];
 
 let safeDistance = 50;
 let lockedIndex = 0;
@@ -18,6 +19,7 @@ const widthOffset = 10;
 
 let objects = [];
 let stickCount = 0;
+let objScale = 0.25;
 
 class MainScene extends Phaser.Scene {
     left = 65;
@@ -43,14 +45,17 @@ class MainScene extends Phaser.Scene {
         }
     }
 
-    async initialize() {
+    async initialize() {        
+        let counter = 0;
+        let division = 0;
+        if (set.objScale !== undefined) objScale = set.objScale;
+
         for (let i = 0; i < icons.length; i++) {
             let icon = icons[i];
             let x = positions[i].left;
             let y = positions[i].top;
 
             circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
-
             circles[i].setScale(0.5);
             circles[i].setInteractive();
 
@@ -58,8 +63,8 @@ class MainScene extends Phaser.Scene {
             this.input.dragDistanceThreshold = 5;
 
             if (icon.stick !== undefined) {
-                stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y, occupied: false, 
-                wrong: icon.stick.wrongMsg, correct: icon.stick.correctMsg };
+                stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y, occupied: false,
+                    wrong: icon.stick.wrongMsg, correct: icon.stick.correctMsg};
 
                 circles[i].stickIndex = i;
                 stickCount++;
@@ -68,9 +73,23 @@ class MainScene extends Phaser.Scene {
             if (icon.full !== undefined) circles[i].full = icon.full;
             circles[i].obj = "obj_" + icon.name;
             circles[i].stuckIn = -1;
+
+            if (divisions > -1) {
+                if (counter === divisions) {
+                    counter = 0;
+                    division++;
+                }
+                counter++;
+
+                circles[i].division = division;
+                stickPositions[i].division = division;
+            }
         }
 
-        this.shuffle(circles);
+        if (divisions < 0) {
+            await this.shuffleArrays([icons, circles, stickPositions]);
+        }
+        addPulses();
 
         this.input.on('dragstart', this.dragstart);
         this.input.on('drag', this.drag);
@@ -78,18 +97,18 @@ class MainScene extends Phaser.Scene {
         this.input.on('wheel', this.wheel);
     }
 
-    async shuffle(array) {
-        let currentIndex = array.length;
+    async shuffleArrays(arrays) {
+        let currentIndex = arrays[0].length;
         let randomIndex;
 
-        while (0 !== currentIndex) {
+        while (currentIndex !== 0) {
             randomIndex = Math.floor(Math.random() * currentIndex);
             currentIndex--;
 
-            [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            for(let i = 0; i < arrays.length; i++) {
+                [arrays[i][currentIndex], arrays[i][randomIndex]] = [arrays[i][randomIndex], arrays[i][currentIndex]];
+            }
         }
-
-        return array;
     }
 
     async update() {
@@ -156,40 +175,42 @@ class MainScene extends Phaser.Scene {
             if (!stickPositions[stickIndex].occupied) {
                 gameObject.x = stickPositions[stickIndex].x;
                 gameObject.y = stickPositions[stickIndex].y;
+
                 stickPositions[stickIndex].occupied = true;
                 gameObject.stuckIn = stickIndex;
-
                 gameObject.onCanvas = true;
 
                 if (canPlace(gameObject, index)) {
                     return;
                 }
 
-                if (gameObject.stickIndex == stickIndex) {
+                if (gameObject.stickIndex == stickIndex || (gameObject.division === stickPositions[stickIndex].division && gameObject.division !== undefined)) {
                     lockedIndex++;
 
                     $(`#_${stickIndex}`).hide();
                     $(`#f_${stickIndex}`).show();
                     gfx.toggleFlash("green");
-                    playNewAudio(stickIndex, "correct");
+
+                    playNewAudio(set.objectBased ? index : stickIndex, "correct");
                     playSfx("correct");
 
                     gameObject.visible = false;
+                    gameObject.myIndex = index;
                     handleCorrectObject(gameObject);
                     
                     gfx.disableIcon(gfx.icons[index]);
                 } else {
                     gfx.toggleFlash("red");
-                    playNewAudio(stickIndex, "wrong");
+                    
+                    playNewAudio(set.objectBased ? index : stickIndex, "wrong");
                     playSfx("wrong");
 
                     gameObject.alpha = 0.001;
                     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
 
-                    obj.setScale(0.25);
+                    obj.setScale(objScale);
                     gameObject.objImage = obj;
                 }
-
             } else {
                 gameObject.x = startingPositions[index].x;
                 gameObject.y = startingPositions[index].y;
@@ -197,8 +218,8 @@ class MainScene extends Phaser.Scene {
             }
         }
         else {
-            let x = (gameObject.x - gameObject.displayWidth / 2) + widthOffset;
-            let yTop = (gameObject.y - gameObject.displayHeight / 2) + widthOffset;
+            let x       = (gameObject.x - gameObject.displayWidth / 2)  + widthOffset;
+            let yTop    = (gameObject.y - gameObject.displayHeight / 2) + widthOffset;
             let yBottom = (gameObject.y + gameObject.displayHeight / 2) - widthOffset;
 
             if (x < posterOffset.x || yTop < posterOffset.y || yBottom > height - posterOffset.y) {
@@ -217,6 +238,9 @@ class MainScene extends Phaser.Scene {
 
         if (lockedIndex == stickCount) {
             handle = true;
+            for (let i = 0; i < circles.length; i++) {
+                fadeOut(circles[i]);
+            }
             await end();
         }
     }
@@ -244,8 +268,11 @@ const handleCorrectObject = async (gameObject) => {
     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
     
     obj.stickIndex = gameObject.stickIndex;
-    obj.alpha = 0.001;
-    obj.setScale(0.25);
+    obj.myIndex = gameObject.myIndex;
+    if (divisions === -1) {
+        obj.alpha = 0.001;
+    }
+    obj.setScale(objScale);
     objects.push(obj);
 }
 
@@ -270,50 +297,106 @@ const handleEvents = async () => {
 
 const enableIcons = async () => {
     for (let obj of objects) {
-        obj.x -= 79;
+        animateX(obj, 79, 500);
         obj.setInteractive({ cursor: 'pointer' });
-        let index = obj.stickIndex;
+        let index = set.objectBased ? obj.myIndex : obj.stickIndex;
+        obj.index = index;
+        startAnimation(index, objScale);
         
         $(`#f_${index}`).addClass("pulsingImage");
 
         obj.on("pointerover", function(event) {
             $(`#f_${index}`).addClass("imageHover");
+            stopAnimation(index);
+            this.alpha = 0.8;
+            this.scale = objScale;
         });
 
         obj.on("pointerout", function(event) {
-            if (this.stickIndex !== audioIndex) {
-                $(`#f_${index}`).removeClass("imageHover");
+            if (this.index !== audioIndex) {
+                $(`#f_${this.index}`).removeClass("imageHover");
+                startAnimation(this.index, objScale);
             }
+            
+            this.alpha = 1;
         });
 
         obj.on("pointerdown", function(event) {
-            if (this.stickIndex !== audioIndex) {
-                $(`#f_${index}`).addClass("imageHover");
-                $(`#f_${index}`).addClass("imageDown");
+            if (this.index !== audioIndex) {
+                $(`#f_${this.index}`).addClass("imageHover");
+                $(`#f_${this.index}`).addClass("imageDown");
             }
+            
+            this.alpha = 0.6;
         });
 
         obj.on("pointerup", function(event) {
             if (playing) togglePlay(outcomeAudio);
+            let lastIndex = audioIndex;
 
-            if (this.stickIndex === audioIndex && audioIndex !== -1) {
+            if (this.index === audioIndex && audioIndex !== -1) {
                 if (!audioElem.paused) {
-                    $(`#f_${index}`).removeClass("imageHover");
+                    $(`#f_${this.index}`).removeClass("imageHover");
+                    startAnimation(this.index, objScale);
                     audioElem.pause();
+                    audioIndex = -1;
                 } else {
-                    $(`#f_${index}`).addClass("imageHover");
+                    $(`#f_${this.index}`).addClass("imageHover");
                     audioElem.play();
+                    stopAnimation(this.index);
+                    audioIndex = this.index;
                 }
+            } else {
+                $(`#f_${this.index}`).removeClass("imageDown");
+                this.alpha = 1;
                 
-                return;
+                playNewAudio(this.index, "correct", true);
+                audioIndex = this.index;
             }
 
-            $(`#f_${index}`).removeClass("imageDown");
-
-            playNewAudio(index, "correct", true);
-            audioIndex = index;
+            if (lastIndex !== -1) startAnimation(lastIndex, objScale);
         });
     }
+}
+
+const fadeOut = async (object) => {
+    let interval = setInterval(() => {
+        object.alpha -= 0.05;
+        if (object.alpha <= 0) clearInterval(interval);
+    }, 10);
+}
+
+const animateX = (obj, value, time) => {
+    let tween = window.context.tweens.add({
+        targets: obj,
+        x: obj.x - value,
+        duration: time,
+        ease: 'Quad.easeOut'
+    })
+}
+
+const startAnimation = async(index, scale) => {
+    stopAnimation(index);
+    let dir = 1;
+    let obj;
+    for (let object of objects) {
+        if (object.index === index) obj = object;
+    }
+    obj.scale = scale;
+
+    intervals[index] = setInterval(() => {
+        if (obj.scale >= scale + 0.04) {
+            dir = -1;
+        } else if (obj.scale <= scale) {
+            dir = 1;
+        }
+
+        obj.scale += dir / 3000;
+    }, 1);
+}
+
+const stopAnimation = async (index) => {
+    clearInterval(intervals[index]);
 }
 
 const msg = async () => {
