@@ -87,7 +87,7 @@ class MainScene extends Phaser.Scene {
         }
 
         if (divisions < 0) {
-            await this.shuffleArrays([icons, circles, stickPositions]);
+            await this.shuffleArrays([circles]);
         }
         addPulses();
 
