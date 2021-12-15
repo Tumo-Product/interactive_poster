@@ -58,6 +58,7 @@ class MainScene extends Phaser.Scene {
             circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
             circles[i].setScale(0.5);
             circles[i].setInteractive();
+            circles[i].stick = icon.stick;
 
             this.input.setDraggable(circles[i]);
             this.input.dragDistanceThreshold = 5;
@@ -86,9 +87,7 @@ class MainScene extends Phaser.Scene {
             }
         }
 
-        if (divisions < 0) {
-            await this.shuffleArrays([circles]);
-        }
+        await this.shuffleArrays([circles]);
         addPulses();
 
         this.input.on('dragstart', this.dragstart);

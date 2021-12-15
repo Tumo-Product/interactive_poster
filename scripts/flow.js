@@ -108,7 +108,7 @@ const togglePlay = async (elem) => {
 
 const playNewAudio = async (index, type, individual) => {
     if (!popupEnabled) return;
-    let audio = icons[index].stick[type + "Msg"];
+    let audio = circles[index].stick[type + "Msg"];
     audioElem.src = audio;
     audioElem.currentTime = 0;
 
