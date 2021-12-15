@@ -49,6 +49,7 @@ const onPageLoad = async () => {
 
     $("#intro").html(set.intro);
     $("#poster").attr("src", set.background);
+    document.getElementById("sfxAudio").volume = 0.4;
 
     game = new Phaser.Game(phaserConfig);
 
@@ -66,7 +67,6 @@ const onPageLoad = async () => {
         gfx.addOutcome(0, backgrounds);
     }
 
-    // await getAudioData();
     $("#msg").click(function() { $(this).removeClass("active"); });
 
     audioElem = document.getElementById("audio");
@@ -89,30 +89,12 @@ const handleAudioEvent = async () => {
     togglePlay(audioElem);
 }
 
-const getAudioData = async () => {
-    for (let i = 0; i < icons.length; i++) {
-        if (icons[i].stick === undefined) continue;
-
-        let correct = icons[i].stick.correctMsg;
-        if (correct !== undefined) {
-            correct = await parser.getFile(correct);
-            correct = "data:audio/mpeg;base64," + correct;
-            icons[i].stick.correctMsg = correct;
-        }
-
-        let wrong = icons[i].stick.wrongMsg;
-        if (wrong !== undefined) {
-            wrong = await parser.getFile(wrong);
-            wrong = "data:audio/mpeg;base64," + wrong;
-            icons[i].stick.wrongMsg = wrong;
-        }
+const togglePlay = async (elem) => {
+    if (handle === true && !handled) {
+        handled = true;
+        handleEvents();
     }
 
-    set.outcome = await parser.getFile(set.outcome);
-    set.outcome = "data:audio/mpeg;base64," + set.outcome;
-}
-
-const togglePlay = async (elem) => {
     playing = !playing;
 
     if (playing) {
@@ -145,9 +127,10 @@ const playSfx = async (type) => {
 }
 
 const end = async () => {
-    if (handle && !handled) {
-        handleEvents();
+    for (let i = 0; i < circles.length; i++) {
+        fadeOut(circles[i]);
     }
+    handle = true;
     await gfx.end(popupEnabled);
 }
 
@@ -194,3 +177,26 @@ const addPulses = async () => {
 }
 
 $(onPageLoad());
+
+const getAudioData = async () => {
+    for (let i = 0; i < icons.length; i++) {
+        if (icons[i].stick === undefined) continue;
+
+        let correct = icons[i].stick.correctMsg;
+        if (correct !== undefined) {
+            correct = await parser.getFile(correct);
+            correct = "data:audio/mpeg;base64," + correct;
+            icons[i].stick.correctMsg = correct;
+        }
+
+        let wrong = icons[i].stick.wrongMsg;
+        if (wrong !== undefined) {
+            wrong = await parser.getFile(wrong);
+            wrong = "data:audio/mpeg;base64," + wrong;
+            icons[i].stick.wrongMsg = wrong;
+        }
+    }
+
+    set.outcome = await parser.getFile(set.outcome);
+    set.outcome = "data:audio/mpeg;base64," + set.outcome;
+}

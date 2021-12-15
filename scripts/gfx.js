@@ -175,8 +175,7 @@ const gfx = {
 			}
 			
 			setTimeout(() => {
-				enableIcons();
-				msg(set.popupText);
+				
 			}, 3000);
 			return;
 		}

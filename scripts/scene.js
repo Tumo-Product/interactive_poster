@@ -237,10 +237,6 @@ class MainScene extends Phaser.Scene {
         }
 
         if (lockedIndex == stickCount) {
-            handle = true;
-            for (let i = 0; i < circles.length; i++) {
-                fadeOut(circles[i]);
-            }
             await end();
         }
     }
@@ -277,8 +273,6 @@ const handleCorrectObject = async (gameObject) => {
 }
 
 const handleEvents = async () => {
-    togglePlay(outcomeAudio);
-    gfx.enablePlayBtn();
     $("#popupBtn").unbind("click");
 
     $("#popupBtn").click(function() {
@@ -297,8 +291,8 @@ const handleEvents = async () => {
         stopAnimation(audioIndex);
         audioIndex = -1;
     });
-
-    handled = true;
+    msg(set.popupText);
+    enableIcons();
 }
 
 const enableIcons = async () => {
@@ -407,14 +401,14 @@ const stopAnimation = async (index) => {
     for (let object of objects) {
         if (object.index === index) obj = object;
     }
-    obj.scale = objScale;
+    if (obj !== undefined) { obj.scale = objScale; }
     clearInterval(intervals[index]);
 }
 
 const msg = async (text) => {
     $("#msg p").html(text);
     $("#msg").addClass("active");
-    await timeout(5000);
+    await timeout(10000);
     $("#msg").removeClass("active");
 }
 
