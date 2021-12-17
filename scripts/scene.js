@@ -58,7 +58,8 @@ class MainScene extends Phaser.Scene {
             circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
             circles[i].setScale(0.5);
             circles[i].setInteractive();
-            circles[i].stick = icon.stick;
+            circles[i].stick    = icon.stick;
+            circles[i].wrongMsg = icon.wrongMsg;
 
             this.input.setDraggable(circles[i]);
             this.input.dragDistanceThreshold = 5;
@@ -301,58 +302,70 @@ const enableIcons = async () => {
         obj.index = index;
         
         obj.on("pointerover", function(event) {
-            $(`#f_${index}`).addClass("imageHover");
+            if ($(`#f_${this.stickIndex}`).length > 0) {
+                $(`#f_${this.stickIndex}`).addClass("imageHover");
+                return;
+            }
             stopAnimation(index);
             this.alpha = 0.8;
             this.scale = objScale;
         });
 
         obj.on("pointerout", function(event) {
-            if (this.index !== audioIndex) {
-                $(`#f_${this.index}`).removeClass("imageHover");
+            if ($(`#f_${this.stickIndex}`).length > 0) {
+                $(`#f_${this.stickIndex}`).removeClass("imageHover");
             } else {
+                this.alpha = 1;
+            }
+
+            if (this.index === audioIndex) {
+                if ($(`#f_${this.stickIndex}`).length > 0) {
+                    $(`#f_${this.stickIndex}`).addClass("pulsingImage");
+                }
                 startAnimation(this.index, objScale);
             }
-            
-            this.alpha = 1;
+
         });
 
         obj.on("pointerdown", function(event) {
-            if (this.index !== audioIndex) {
-                $(`#f_${this.index}`).addClass("imageHover");
-                $(`#f_${this.index}`).addClass("imageDown");
+            if ($(`#f_${this.stickIndex}`).length > 0) {
+                $(`#f_${this.stickIndex}`).addClass("imageDown");
+            } else {
+                this.alpha = 0.6;
             }
-            
-            this.alpha = 0.6;
         });
 
         obj.on("pointerup", function(event) {
             if (playing) togglePlay(outcomeAudio);
             let lastIndex = audioIndex;
-            $(`#f_${this.index}`).removeClass("imageDown");
+            $(`#f_${this.stickIndex}`).removeClass("imageDown");
 
             if (this.index === audioIndex && audioIndex !== -1) {
                 if (!audioElem.paused) {
-                    $(`#f_${this.index}`).removeClass("pulsingImage");
+                    $(`#f_${this.stickIndex}`).removeClass("pulsingImage");
                     stopAnimation(this.index);
                     audioElem.pause();
                     audioIndex = -1;
                 } else {
-                    $(`#f_${this.index}`).addClass("pulsingImage");
+                    $(`#f_${this.stickIndex}`).addClass("pulsingImage");
                     audioElem.play();
                     startAnimation(this.index, objScale);
                     audioIndex = this.index;
                 }
             } else {
-                $(`#f_${this.index}`).addClass("pulsingImage");
-                this.alpha = 1;
-                
                 playNewAudio(this.index, "correct", true);
                 audioIndex = this.index;
+
+                if ($(`#f_${this.stickIndex}`).length > 0) {
+                    $(`#f_${this.stickIndex}`).addClass("pulsingImage");
+                } else {
+                    this.alpha = 1;
+                }
+
             }
 
             if (lastIndex !== -1) {
-                $(`#f_${lastIndex}`).removeClass("pulsingImage");
+                $(".pulsingImage").removeClass("pulsingImage");
                 stopAnimation(lastIndex);
             }
         });

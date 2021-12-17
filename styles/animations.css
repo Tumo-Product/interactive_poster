@@ -79,7 +79,7 @@
 }
 
 .pulsingImage {
-    animation: upDown 1.8s linear infinite;
+    animation: upDown 1.8s linear infinite !important;
 }
 
 @keyframes upDown {
@@ -88,7 +88,7 @@
     }
 
     50% {
-        transform: scale(1.25);
+        transform: scale(1.15);
     }
 
     100% {
@@ -104,5 +104,6 @@
 
 .imageDown {
     opacity: 0.5 !important;
+    animation: none !important;
     /* filter: drop-shadow(2px 2px 2px rgba(255, 255, 255, 0.4)) drop-shadow(-1px -1px 0px rgba(255, 255, 123, 0.4)) !important; */
 }
