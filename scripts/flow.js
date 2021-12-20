@@ -176,7 +176,6 @@ const addPulses = async () => {
     for (let i = 0; i < icons.length; i++) {
 		await gfx.activatePulse(i);
     }
-    
 }
 
 $(onPageLoad());

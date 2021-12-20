@@ -167,6 +167,9 @@ const gfx = {
 		$(".front #background").addClass("center");
 		
 		if (popupEnabled) {
+			if (set.background_end.length > 5) {
+				$("#poster").attr("src", set.background_end);
+			}
 			$("#backgrund").css("z-index", 1);
 			$(".back").remove();
 
