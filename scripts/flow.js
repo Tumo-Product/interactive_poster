@@ -170,7 +170,7 @@ const addPulses = async () => {
             $("#popup").css("opacity", 1);
         }
 
-        gfx.addPulse(icons[i].stick.x + 5, icons[i].stick.y + 5, i);
+        gfx.addPulse(icons[i].stick.x + 8, icons[i].stick.y + 8, i);
     }
 
     for (let i = 0; i < icons.length; i++) {
