@@ -76,17 +76,26 @@ const gfx = {
 		}, 600);
 	},
 	onPlay: async () => {
-		$("#icons").addClass("grow");
-		$("#iconsOverlay").addClass("grow");
-		$(".front #background p").css("opacity", 0);
-		await timeout(400);
-		$(".front #background p").remove();
-		$("#poster").css("opacity", 1);
-		$("#poster").css("filter", "none");
-		await timeout(500);
-		$("#play").addClass("offscreen");
-		await timeout(1000);
-		$("#play").remove();
+		if (!finalizedPoster) {
+			$("#icons").addClass("grow");
+			$("#iconsOverlay").addClass("grow");
+			$(".front #background p").css("opacity", 0);
+			await timeout(400);
+			$(".front #background p").remove();
+			$("#poster").css("opacity", 1);
+			$("#poster").css("filter", "none");
+			await timeout(500);
+			$("#play").addClass("offscreen");
+			await timeout(1000);
+			$("#play").remove();
+		} else {
+			$(".front #background p").css("opacity", 0);
+			await timeout(400);
+			$(".front #background p").remove();
+			$("#poster").css("opacity", 1);
+			$("#poster").css("filter", "none");
+			$("#play").addClass("offscreen");
+		}
 	},
 	addOutcome: (index, img, text) => {
 		let outcome = `<div class="outcome" id="o_${index}"><img><p>${text}</p></div>`;
@@ -176,10 +185,6 @@ const gfx = {
 			for (let obj of objects) {
 				animateX(obj, 79, 500);
 			}
-			
-			setTimeout(() => {
-				
-			}, 3000);
 			return;
 		}
 		await timeout(1500);

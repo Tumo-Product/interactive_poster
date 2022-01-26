@@ -16,6 +16,8 @@ let handle = false;
 let outcomeShown = false;
 let divisions = -1;
 
+let finalizedPoster = false;
+
 let phaserConfig = {
     type: Phaser.AUTO,
     mipmapFilter: "LINEAR_MIPMAP_LINEAR",
@@ -36,6 +38,7 @@ const onPageLoad = async () => {
     let data = await parser.dataFetch();
     set = data.data.data;
     bgPath = set.background;
+    finalizedPoster = set.finalized === true ? true : false;
     if (set.divisions !== undefined) divisions = set.divisions;
 
     for (let i = 0; i < set.icons.length; i++) {
@@ -81,6 +84,10 @@ const onPageLoad = async () => {
         }
     });
 
+    if (finalizedPoster) {
+        $(".fullImage").each(function () { $(this).show(); });
+        onPlay();
+    }
 	await timeout(1000);
     gfx.toggleLoadingScreen();
 }
@@ -140,11 +147,18 @@ const end = async () => {
 const onPlay = async () => {
     $("#play").attr("onclick", ""); // disable click, so you can't spam click
     $("#popupBtn").click(function() {
-        togglePlay(audioElem);
+        togglePlay(finalizedPoster ? outcomeAudio : audioElem);
     });
 
     gfx.toggleCanvas();
     await gfx.onPlay();
+    if (finalizedPoster) {
+        end();
+        window.context.initialize();
+        finalize();
+        $(".disabledPopupBtn").removeClass("disabledPopupBtn");
+        return;
+    }
 
     gfx.addIcons();
     updatePositions();
@@ -173,8 +187,10 @@ const addPulses = async () => {
         gfx.addPulse(icons[i].stick.x + 7, icons[i].stick.y + 7, i);
     }
 
-    for (let i = 0; i < icons.length; i++) {
-		await gfx.activatePulse(i);
+    if (!finalizedPoster) {
+        for (let i = 0; i < icons.length; i++) {
+            await gfx.activatePulse(i);
+        }
     }
 }
 

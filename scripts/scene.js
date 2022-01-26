@@ -36,7 +36,9 @@ class MainScene extends Phaser.Scene {
     async create() {
         for (let i = 0; i < icons.length; i++) {
             // this.load.svg(icons[i].name, icons[i].img);
-            this.textures.addBase64(icons[i].name, icons[i].img);
+            if (!finalizedPoster) {
+                this.textures.addBase64(icons[i].name, icons[i].img);
+            }
 
             if (icons[i].obj !== undefined) {
                 // this.load.image("obj_" + icons[i].name, icons[i].obj);
@@ -52,17 +54,24 @@ class MainScene extends Phaser.Scene {
 
         for (let i = 0; i < icons.length; i++) {
             let icon = icons[i];
-            let x = positions[i].left;
-            let y = positions[i].top;
+            if (!finalizedPoster) {
+                let x = positions[i].left;
+                let y = positions[i].top;
 
-            circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
-            circles[i].setScale(0.5);
-            circles[i].setInteractive();
+                circles[i] = this.add.image(x, y, icon.name).setOrigin(0.5);
+                circles[i].setScale(0.5);
+                circles[i].setInteractive();
+            } else {
+                circles[i] = { };
+            }
+
             circles[i].stick    = icon.stick;
             circles[i].wrongMsg = icon.wrongMsg;
 
-            this.input.setDraggable(circles[i]);
-            this.input.dragDistanceThreshold = 5;
+            if (!finalizedPoster) {
+                this.input.setDraggable(circles[i]);
+                this.input.dragDistanceThreshold = 5;
+            }
 
             if (icon.stick !== undefined) {
                 stickPositions[i] = { x: icon.stick.x + posterOffset.x, y: icon.stick.y + posterOffset.y, occupied: false,
@@ -85,6 +94,11 @@ class MainScene extends Phaser.Scene {
 
                 circles[i].division = division;
                 stickPositions[i].division = division;
+            }
+
+            if (finalizedPoster) {
+                circles[i].x = stickPositions[i].x;
+                circles[i].y = stickPositions[i].y;
             }
         }
 
@@ -112,19 +126,21 @@ class MainScene extends Phaser.Scene {
     }
 
     async update() {
-        updatePositions();
+        if (!finalizedPoster) {
+            updatePositions();
 
-        if (circles.length > 0 && positions !== undefined && !dragging) {
-            for (let i = 0; i < circles.length; i++) {
-                if (!circles[i].onCanvas) {
-                    circles[i].y = positions[i].top;
-                    startingPositions[i] = { x: circles[i].x, y: circles[i].y };
+            if (circles.length > 0 && positions !== undefined && !dragging) {
+                for (let i = 0; i < circles.length; i++) {
+                    if (!circles[i].onCanvas) {
+                        circles[i].y = positions[i].top;
+                        startingPositions[i] = { x: circles[i].x, y: circles[i].y };
+                    }
                 }
             }
-        }
-        
-        for (let i = 0; i < startingPositions.length; i++) {
-            startingPositions[i] = { x: startingPositions[i].x, y: positions[i].top };
+            
+            for (let i = 0; i < startingPositions.length; i++) {
+                startingPositions[i] = { x: startingPositions[i].x, y: positions[i].top };
+            }
         }
     }
 
@@ -260,6 +276,16 @@ class MainScene extends Phaser.Scene {
     }
 }
 
+const finalize = async () => {
+    for (let i = 0; i < circles.length; i++) {
+        let gameObject = circles[i];
+        gfx.toggleFlash("green");
+        $(`#f_${gameObject.stickIndex}`).show();
+
+        handleCorrectObject(gameObject);
+    }
+}
+
 const handleCorrectObject = async (gameObject) => {
     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
     
@@ -361,7 +387,6 @@ const enableIcons = async () => {
                 } else {
                     this.alpha = 1;
                 }
-
             }
 
             if (lastIndex !== -1) {
