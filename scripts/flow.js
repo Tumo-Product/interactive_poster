@@ -87,8 +87,13 @@ const onPageLoad = async () => {
     if (finalizedPoster) {
         $(".fullImage").each(function () { $(this).show(); });
         onPlay();
+        $(".flash").remove();
+        $("#popup").remove();
+        await timeout(2000);
+        enableIcons();
     }
 	await timeout(1000);
+    msg(set.popupText);
     gfx.toggleLoadingScreen();
 }
 

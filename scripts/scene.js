@@ -289,6 +289,7 @@ const finalize = async () => {
 const handleCorrectObject = async (gameObject) => {
     let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
     
+    gameObject.myIndex = circles.indexOf(gameObject);
     obj.stickIndex = gameObject.stickIndex;
     obj.myIndex = gameObject.myIndex;
     if (divisions === -1) {
@@ -299,26 +300,28 @@ const handleCorrectObject = async (gameObject) => {
 }
 
 const handleEvents = async () => {
-    $("#popupBtn").unbind("click");
+    if (!finalizedPoster) {
+        $("#popupBtn").unbind("click");
 
-    $("#popupBtn").click(function() {
-        audioElem.pause();
-        $(`.pulsingImage`).removeClass("pulsingImage");
-        togglePlay(outcomeAudio);
+        $("#popupBtn").click(function() {
+            audioElem.pause();
+            $(`.pulsingImage`).removeClass("pulsingImage");
+            togglePlay(outcomeAudio);
 
-        for (let obj of objects) {
-            stopAnimation(obj.index);
-        }
-    });
+            for (let obj of objects) {
+                stopAnimation(obj.index);
+            }
+        });
 
-    audioElem.removeEventListener("ended", handleAudioEvent);
-    audioElem.addEventListener("ended", function() {
-        $(`.pulsingImage`).removeClass("pulsingImage");
-        stopAnimation(audioIndex);
-        audioIndex = -1;
-    });
-    msg(set.popupText);
-    enableIcons();
+        audioElem.removeEventListener("ended", handleAudioEvent);
+        audioElem.addEventListener("ended", function() {
+            $(`.pulsingImage`).removeClass("pulsingImage");
+            stopAnimation(audioIndex);
+            audioIndex = -1;
+        });
+        msg(set.popupText);
+        enableIcons();
+    }
 }
 
 const enableIcons = async () => {
