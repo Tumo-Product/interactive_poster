@@ -186,8 +186,8 @@ const addPulses = async () => {
 
         gfx.addPulse(icons[i].stick.x + 7, icons[i].stick.y + 7, i);
     }
-
-    if (!finalizedPoster) {
+    
+    if (!finalizedPoster && !set.hiddenPulses) {
         for (let i = 0; i < icons.length; i++) {
             await gfx.activatePulse(i);
         }
