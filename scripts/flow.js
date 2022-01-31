@@ -93,7 +93,7 @@ const onPageLoad = async () => {
         enableIcons();
     }
 	await timeout(1000);
-    msg(set.popupText);
+    if (finalizedPoster) msg(set.popupText);
     gfx.toggleLoadingScreen();
 }
 
