@@ -79,7 +79,7 @@
 }
 
 .pulsingImage {
-    animation: upDown 1.08s linear infinite !important;
+    animation: upDown 1.15s linear infinite !important;
 }
 
 @keyframes upDown {
@@ -88,7 +88,7 @@
     }
 
     50% {
-        transform: scale(1.15);
+        transform: scale(1.08);
     }
 
     100% {
