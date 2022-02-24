@@ -103,6 +103,7 @@ const handleAudioEvent = async () => {
 }
 
 const togglePlay = async (elem) => {
+    console.log("playing");
     if (handle === true && !handled) {
         handled = true;
         handleEvents();
@@ -133,6 +134,13 @@ const playNewAudio = async (index, type, individual) => {
         gfx.enablePauseBtn();
         playing = true;
     }
+    if (finalizedPoster) {
+        if (handle === true && !handled) {
+            handled = true;
+            handleEvents();
+        }
+        playing = true;  
+    } 
     audioElem.play();
 }
 
