@@ -300,25 +300,26 @@ const handleCorrectObject = async (gameObject) => {
 }
 
 const handleEvents = async () => {
+    $("#popupBtn").unbind("click");
+
+    $("#popupBtn").click(function() {
+        audioElem.pause();
+        $(`.pulsingImage`).removeClass("pulsingImage");
+        togglePlay(outcomeAudio);
+
+        for (let obj of objects) {
+            stopAnimation(obj.index);
+        }
+    });
+
+    audioElem.removeEventListener("ended", handleAudioEvent);
+    audioElem.addEventListener("ended", function() {
+        $(`.pulsingImage`).removeClass("pulsingImage");
+        stopAnimation(audioIndex);
+        audioIndex = -1;
+    });
+        
     if (!finalizedPoster) {
-        $("#popupBtn").unbind("click");
-
-        $("#popupBtn").click(function() {
-            audioElem.pause();
-            $(`.pulsingImage`).removeClass("pulsingImage");
-            togglePlay(outcomeAudio);
-
-            for (let obj of objects) {
-                stopAnimation(obj.index);
-            }
-        });
-
-        audioElem.removeEventListener("ended", handleAudioEvent);
-        audioElem.addEventListener("ended", function() {
-            $(`.pulsingImage`).removeClass("pulsingImage");
-            stopAnimation(audioIndex);
-            audioIndex = -1;
-        });
         msg(set.popupText);
         enableIcons();
     }

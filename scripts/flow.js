@@ -91,6 +91,7 @@ const onPageLoad = async () => {
         $("#popup").remove();
         await timeout(2000);
         enableIcons();
+        handle = true;
     }
 	await timeout(1000);
     if (finalizedPoster) msg(set.popupText);
