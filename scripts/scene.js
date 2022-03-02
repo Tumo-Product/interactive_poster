@@ -21,6 +21,13 @@ let objects = [];
 let stickCount = 0;
 let objScale = 0.25;
 
+const popupElement = document.getElementById('popup');
+const msgElement = document.getElementById('msg');
+for (const eventName of ['mouseup','mousedown', 'touchstart', 'touchmove', 'touchend', 'touchcancel']){
+    popupElement.addEventListener(eventName, e => e.stopPropagation());
+    msgElement.addEventListener(eventName, e => e.stopPropagation());
+}
+
 class MainScene extends Phaser.Scene {
     left = 65;
     top = 104;
