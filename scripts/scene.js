@@ -89,18 +89,21 @@ class MainScene extends Phaser.Scene {
             }
 
             if (icon.full !== undefined) circles[i].full = icon.full;
+            circles[i].offset = icon.offset;
             circles[i].obj = "obj_" + icon.name;
             circles[i].stuckIn = -1;
 
             if (divisions > -1) {
-                if (counter === divisions) {
-                    counter = 0;
-                    division++;
+                if (stickPositions[i] !== undefined)  {
+                    if (counter === divisions) {
+                        counter = 0;
+                        division++;
+                    }
+                    counter++;
+    
+                    circles[i].division = division;
+                    stickPositions[i].division = division;
                 }
-                counter++;
-
-                circles[i].division = division;
-                stickPositions[i].division = division;
             }
 
             if (finalizedPoster) {
@@ -229,7 +232,13 @@ class MainScene extends Phaser.Scene {
                     playSfx("wrong");
 
                     gameObject.alpha = 0.001;
-                    let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
+
+                    let xOffset = 0, yOffset = 0;
+                    if (gameObject.offset !== undefined) {
+                        xOffset = gameObject.offset.x !== undefined ? gameObject.offset.x : 0;
+                        yOffset = gameObject.offset.y !== undefined ? gameObject.offset.y : 0;
+                    }
+                    let obj = window.context.add.image(gameObject.x + xOffset, gameObject.y + yOffset, gameObject.obj);
 
                     obj.setScale(objScale);
                     gameObject.objImage = obj;
@@ -294,7 +303,12 @@ const finalize = async () => {
 }
 
 const handleCorrectObject = async (gameObject) => {
-    let obj = window.context.add.image(gameObject.x, gameObject.y, gameObject.obj);
+    let xOffset = 0, yOffset = 0;
+    if (gameObject.offset !== undefined) {
+        xOffset = gameObject.offset.x !== undefined ? gameObject.offset.x : 0;
+        yOffset = gameObject.offset.y !== undefined ? gameObject.offset.y : 0;
+    }
+    let obj = window.context.add.image(gameObject.x + xOffset, gameObject.y + yOffset, gameObject.obj);
     
     gameObject.myIndex = circles.indexOf(gameObject);
     obj.stickIndex = gameObject.stickIndex;
