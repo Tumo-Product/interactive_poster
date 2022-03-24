@@ -308,7 +308,8 @@ const handleCorrectObject = async (gameObject) => {
         xOffset = gameObject.offset.x !== undefined ? gameObject.offset.x : 0;
         yOffset = gameObject.offset.y !== undefined ? gameObject.offset.y : 0;
     }
-    let obj = window.context.add.image(gameObject.x + xOffset, gameObject.y + yOffset, gameObject.obj);
+    
+    let obj = window.context.add.image(gameObject.x, gameObject.y + yOffset, gameObject.obj);
     
     gameObject.myIndex = circles.indexOf(gameObject);
     obj.stickIndex = gameObject.stickIndex;
@@ -317,6 +318,11 @@ const handleCorrectObject = async (gameObject) => {
         obj.alpha = 0.001;
     }
     obj.setScale(objScale);
+
+    if (xOffset !== 0) {
+        obj.setOrigin(0.1, 0.5);
+    }
+
     objects.push(obj);
 }
 
@@ -448,13 +454,13 @@ const startAnimation = async(index, scale) => {
     obj.scale = scale;
 
     intervals[index] = setInterval(() => {
-        if (obj.scale >= scale + 0.04) {
+        if (obj.scale >= scale + 0.02) {
             dir = -1;
         } else if (obj.scale <= scale) {
             dir = 1;
         }
 
-        obj.scale += dir / 3000;
+        obj.scale += dir / 6000;
     }, 1);
 }
 
