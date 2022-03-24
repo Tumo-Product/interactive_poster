@@ -20,7 +20,6 @@ let finalizedPoster = false;
 
 let phaserConfig = {
     type: Phaser.AUTO,
-    mipmapFilter: "LINEAR_MIPMAP_LINEAR",
     scale: {
         parent: 'canvas',
         width: width,
