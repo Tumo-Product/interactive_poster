@@ -38,9 +38,7 @@ class MainScene extends Phaser.Scene {
 
     async preload() {
         window.context = this;
-    }
 
-    async create() {
         for (let i = 0; i < icons.length; i++) {
             if (!finalizedPoster) {
                 if (icons[i].img.includes("base64")) {
@@ -59,6 +57,8 @@ class MainScene extends Phaser.Scene {
             }
         }
     }
+
+    async create() {}
 
     async initialize() {        
         let counter = 0;
