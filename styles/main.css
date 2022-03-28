@@ -157,6 +157,8 @@ body {
     justify-content: center;
     align-items: center;
     z-index: -1;
+
+    transition-timing-function: ease-out;
 }
 
 #background img, #outcome {
