@@ -38,7 +38,7 @@ const onPageLoad = async () => {
     set = data.data.data;
     bgPath = set.background;
     finalizedPoster = set.finalized === true ? true : false;
-    if (set.divisions != undefined) divisions = set.divisions;
+    if (set.divisions != undefined && set.divisions != "") divisions = set.divisions;
 
     for (let i = 0; i < set.icons.length; i++) {
         let icon = set.icons[i];
