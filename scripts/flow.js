@@ -35,6 +35,7 @@ const timeout = (ms) => {
 
 const onPageLoad = async () => {
     let data = await parser.dataFetch();
+    console.log(data);
     set = data.data.data;
     bgPath = set.background;
     finalizedPoster = set.finalized === true ? true : false;
