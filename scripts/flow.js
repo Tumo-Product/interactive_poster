@@ -38,6 +38,7 @@ const onPageLoad = async () => {
     console.log(data);
     set = data.data.data;
     bgPath = set.background;
+    if (set.startText) $("#play p").html(set.startText);
     finalizedPoster = set.finalized === true ? true : false;
     if (set.divisions != undefined && set.divisions != "") divisions = set.divisions;
 
